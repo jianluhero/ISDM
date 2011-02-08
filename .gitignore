@@ -14,3 +14,7 @@
 build/
 jars/
 jars-instrumented/
+
+# Ignore map and scenario file
+map.gml
+scenario.xml
