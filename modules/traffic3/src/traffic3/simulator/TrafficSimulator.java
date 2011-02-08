@@ -55,7 +55,7 @@ public class TrafficSimulator extends StandardSimulator implements GUIComponent 
     private static final double REAL_TIME_S = 60;
     private static final int MICROSTEPS = (int)((1000.0 / STEP_TIME_MS) * REAL_TIME_S);
 
-    private static final int RESCUE_AGENT_RADIUS = 500;
+    private static final int RESCUE_AGENT_RADIUS = 500;//the size of agents bing
     private static final int CIVILIAN_RADIUS = 200;
     private static final double RESCUE_AGENT_VELOCITY_MEAN = 0.7;
     private static final double RESCUE_AGENT_VELOCITY_SD = 0.1;

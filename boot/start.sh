@@ -8,8 +8,8 @@ processArgs $*
 rm -f $LOGDIR/*.log
 
 #startGIS
-startKernel
-startSims
+startKernel --nomenu --autorun
+startSims --nogui --viewer.team-name="$TEAM" --viewer.maximise=true
 
 echo "Start your agents"
 waitFor $LOGDIR/kernel.log "Kernel has shut down" 30

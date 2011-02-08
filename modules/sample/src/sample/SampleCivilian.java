@@ -108,12 +108,32 @@ public class SampleCivilian extends AbstractSampleAgent<Civilian> {
         if (damage == 0 && buriedness == 0) {
             // Run for the refuge
             List<EntityID> path = search.breadthFirstSearch(me().getPosition(), refugeIDs);
-            if (path != null) {
+           /* if (path != null) {
                 Logger.info("Heading for a refuge");
                 sendMove(time, path);
                 return;
             }
             else {
+                Logger.info("Moving randomly");
+                sendMove(time, randomWalk());
+                return;
+            }*/
+            double t=random.nextDouble();
+            if (path != null) {
+            	if(t<0.75){
+                Logger.info("Heading for a refuge");
+                sendMove(time, path);
+                return;
+            	}
+            	else
+            	{
+            		Logger.info("Moving randomly");
+                    sendMove(time, randomWalk());
+                    return;
+            	}
+            }
+            else
+            {
                 Logger.info("Moving randomly");
                 sendMove(time, randomWalk());
                 return;

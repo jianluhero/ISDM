@@ -37,7 +37,7 @@ import rescuecore2.standard.entities.StandardEntityURN;
    A view layer that renders humans.
  */
 public class HumanLayer extends StandardEntityViewLayer<Human> {
-    private static final int SIZE = 10;
+    private static final int SIZE = 10;//the size of agents shown in GUI bing
 
     private static final int HP_MAX = 10000;
     private static final int HP_INJURED = 7500;

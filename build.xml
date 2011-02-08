@@ -8,7 +8,7 @@
 
   <!-- Modules directory -->
   <property name="modules.dir" value="${basedir}/modules"/>
-  <property name="modules" value="rescuecore2,kernel,standard,sample,handy,human,collapse,misc,resq-fire,ignition,maps,clear,traffic3,gis2"/>
+  <property name="modules" value="rescuecore2,kernel,standard,sample,handy,human,collapse,misc,resq-fire,ignition,maps,clear,traffic3,gis2,iamrescue"/>
   <property name="modules.kernel.depend" value="rescuecore2,handy"/>
   <property name="modules.standard.depend" value="rescuecore2,kernel"/>
   <property name="modules.sample.depend" value="rescuecore2,standard,kernel"/>
@@ -21,11 +21,14 @@
   <property name="modules.clear.depend" value="rescuecore2,standard"/>
   <property name="modules.traffic3.depend" value="rescuecore2,standard"/>
   <property name="modules.gis2.depend" value="rescuecore2,standard,maps,kernel"/>
+	<property name="modules.iamrescue.depend" value="rescuecore2,standard,kernel,gis2"/>
 
   <import file="${modules.dir}/rescuecore2/build.xml" optional="true"/>
   <import file="${modules.dir}/kernel/build.xml" optional="true"/>
+
   <import file="${modules.dir}/standard/build.xml" optional="true"/>
   <import file="${modules.dir}/sample/build.xml" optional="true"/>
+
   <import file="${modules.dir}/handy/build.xml" optional="true"/>
   <import file="${modules.dir}/human/build.xml" optional="true"/>
   <import file="${modules.dir}/collapse/build.xml" optional="true"/>

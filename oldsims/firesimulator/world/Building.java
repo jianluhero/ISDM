@@ -335,7 +335,7 @@ public class Building extends StationaryObject {
     }
 		
     public void setFloors(int floors){
-        this.floors=floors;
+        this.floors=1;//floors; revise by bing
     }
 
     public void findCells(World w) {

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.0.2">
+ <bounds minlat="50.9289700" minlon="-1.3927900" maxlat="50.9315700" maxlon="-1.3892300"/>
+ <node id="247807" lat="50.9309388" lon="-1.3906695" user="Shepard" uid="35271" visible="true" version="2" changeset="47628" timestamp="2008-10-03T16:18:46Z"/>
+ <node id="20954591" lat="50.9294691" lon="-1.3899062" user="fluteflute" uid="55782" visible="true" version="3" changeset="6893645" timestamp="2011-01-07T15:20:06Z"/>
+ <node id="28107724" lat="50.9323607" lon="-1.3874729" visible="true" version="1" changeset="31145" timestamp="2007-04-27T23:44:18Z">
+  <tag k="created_by" v="JOSM"/>
+ </node>
+ <node id="2073383" lat="50.9293776" lon="-1.3916949" user="fluteflute" uid="55782" visible="true" version="3" changeset="6893645" timestamp="2011-01-07T15:20:05Z"/>
+ <node id="544330" lat="50.9305000" lon="-1.3878600" user="Dee Earley" uid="2231" visible="true" version="1" changeset="7086" timestamp="2007-04-05T14:18:03Z"/>
+ <node id="544329" lat="50.9304000" lon="-1.3876200" user="Dee Earley" uid="2231" visible="true" version="1" changeset="7086" timestamp="2007-04-05T14:20:13Z"/>
+ <node id="247806" lat="50.9301599" lon="-1.3906180" user="Shepard" uid="35271" visible="true" version="2" changeset="47628" timestamp="2008-10-03T16:27:29Z"/>
+ <node id="247809" lat="50.9311282" lon="-1.3914849" user="Shepard" uid="35271" visible="true" version="4" changeset="47628" timestamp="2008-10-03T16:18:38Z"/>
+ <node id="247804" lat="50.9284329" lon="-1.3909936" user="nickw" uid="94" visible="true" version="1" changeset="706" timestamp="2005-11-14T22:50:55Z"/>
+ <node id="544328" lat="50.9301058" lon="-1.3869102" user="Shepard" uid="35271" visible="true" version="2" changeset="47628" timestamp="2008-10-03T16:23:15Z"/>
+ <node id="20954590" lat="50.9294546" lon="-1.3906824" user="fluteflute" uid="55782" visible="true" version="3" changeset="6893645" timestamp="2011-01-07T15:20:06Z"/>
+ <node id="329467" lat="50.9312039" lon="-1.3905494" user="Shepard" uid="35271" visible="true" version="2" changeset="47628" timestamp="2008-10-03T16:19:04Z"/>
+ <node id="518813" lat="50.9333893" lon="-1.3895967" user="Shepard" uid="35271" visible="true" version="2" changeset="47628" timestamp="2008-10-03T16:19:41Z"/>
+ <node id="2073390" lat="50.9299115" lon="-1.3925484" user="fluteflute" uid="55782" visible="true" version="3" changeset="6893645" timestamp="2011-01-07T15:20:05Z"/>
+ <node id="329590" lat="50.9340379" lon="-1.3893227" user="fluteflute" uid="55782" visible="true" version="3" changeset="6513081" timestamp="2010-12-02T10:32:51Z"/>
+ <node id="1088473126" lat="50.9322384" lon="-1.3952240" user="fluteflute" uid="55782" visible="true" version="1" changeset="6893645" timestamp="2011-01-07T15:20:03Z"/>
+ <node id="28107718" lat="50.9316811" lon="-1.3880234" visible="true" version="1" changeset="31145" timestamp="2007-04-27T23:44:12Z">
+  <tag k="created_by" v="JOSM"/>
+ </node>
+ <node id="2073423" lat="50.9312796" lon="-1.3923089" user="Shepard" uid="35271" visible="true" version="3" changeset="47628" timestamp="2008-10-03T16:18:26Z"/>
+ <node id="28107721" lat="50.9314935" lon="-1.3898470" visible="true" version="1" changeset="31145" timestamp="2007-04-27T23:44:14Z">
+  <tag k="created_by" v="JOSM"/>
+ </node>
+ <node id="423289" lat="50.9302302" lon="-1.3872106" user="Shepard" uid="35271" visible="true" version="4" changeset="47628" timestamp="2008-10-03T16:23:17Z"/>
+ <node id="247803" lat="50.9278281" lon="-1.3912050" user="jpd" uid="21244" visible="true" version="2" changeset="350957" timestamp="2008-05-06T16:25:35Z"/>
+ <node id="19035791" lat="50.9319558" lon="-1.3903520" user="Shepard" uid="35271" visible="true" version="2" changeset="47628" timestamp="2008-10-03T16:19:04Z">
+  <tag k="created_by" v="JOSM"/>
+ </node>
+ <node id="314728975" lat="50.9291130" lon="-1.3901760" user="davidearl" uid="3582" visible="true" version="1" changeset="792532" timestamp="2008-11-25T20:28:20Z">
+  <tag k="source" v="www.npemap.org.uk"/>
+  <tag k="uk_postcode_centroid" v="SO17"/>
+ </node>
+ <node id="20954593" lat="50.9300077" lon="-1.3944296" user="nickw" uid="94" visible="true" version="1" changeset="152830" timestamp="2006-11-10T08:43:41Z">
+  <tag k="created_by" v="JOSM"/>
+ </node>
+ <node id="247802" lat="50.9272709" lon="-1.3914453" user="pcman1985" uid="84000" visible="true" version="5" changeset="317836" timestamp="2008-12-11T10:22:30Z"/>
+ <node id="28107720" lat="50.9313643" lon="-1.3887246" visible="true" version="1" changeset="31145" timestamp="2007-04-27T23:44:13Z">
+  <tag k="created_by" v="JOSM"/>
+ </node>
+ <node id="5292817" lat="50.9290566" lon="-1.3907861" user="fluteflute" uid="55782" visible="true" version="3" changeset="6893645" timestamp="2011-01-07T15:20:05Z"/>
+ <node id="1015693988" lat="50.9316768" lon="-1.3883640" user="fluteflute" uid="55782" visible="true" version="1" changeset="6513081" timestamp="2010-12-02T10:32:45Z"/>
+ <node id="28107722" lat="50.9321424" lon="-1.3897240" visible="true" version="1" changeset="31145" timestamp="2007-04-27T23:44:14Z">
+  <tag k="created_by" v="JOSM"/>
+ </node>
+ <node id="1088473108" lat="50.9303089" lon="-1.3927515" user="fluteflute" uid="55782" visible="true" version="1" changeset="6893645" timestamp="2011-01-07T15:20:03Z"/>
+ <node id="2073397" lat="50.9300756" lon="-1.3927190" user="fluteflute" uid="55782" visible="true" version="3" changeset="6893645" timestamp="2011-01-07T15:20:05Z"/>
+ <node id="20954592" lat="50.9299996" lon="-1.3936857" user="fluteflute" uid="55782" visible="true" version="2" changeset="6893645" timestamp="2011-01-07T15:20:06Z"/>
+ <node id="28107723" lat="50.9328374" lon="-1.3893919" visible="true" version="1" changeset="31145" timestamp="2007-04-27T23:44:17Z">
+  <tag k="created_by" v="JOSM"/>
+ </node>
+ <node id="1088473115" lat="50.9321998" lon="-1.3951227" user="fluteflute" uid="55782" visible="true" version="1" changeset="6893645" timestamp="2011-01-07T15:20:03Z"/>
+ <node id="544331" lat="50.9309000" lon="-1.3903300" user="Dee Earley" uid="2231" visible="true" version="1" changeset="7086" timestamp="2007-04-05T14:21:57Z"/>
+ <node id="530605" lat="50.9300382" lon="-1.3947379" user="fluteflute" uid="55782" visible="true" version="2" changeset="6893645" timestamp="2011-01-07T15:20:04Z"/>
+ <node id="1088473074" lat="50.9295496" lon="-1.3907657" user="fluteflute" uid="55782" visible="true" version="1" changeset="6893645" timestamp="2011-01-07T15:20:02Z">
+  <tag k="highway" v="bus_stop"/>
+  <tag k="source" v="Bing"/>
+ </node>
+ <node id="2073513" lat="50.9291808" lon="-1.3912910" user="fluteflute" uid="55782" visible="true" version="3" changeset="6893645" timestamp="2011-01-07T15:20:05Z"/>
+ <node id="28107719" lat="50.9315242" lon="-1.3887030" visible="true" version="1" changeset="31145" timestamp="2007-04-27T23:44:12Z">
+  <tag k="created_by" v="JOSM"/>
+ </node>
+ <node id="21689072" lat="50.9319985" lon="-1.3944815" user="fluteflute" uid="55782" visible="true" version="5" changeset="6893645" timestamp="2011-01-07T15:20:05Z"/>
+ <node id="2073407" lat="50.9305115" lon="-1.3926780" user="Shepard" uid="35271" visible="true" version="2" changeset="47628" timestamp="2008-10-03T16:27:24Z"/>
+ <node id="387820" lat="50.9306852" lon="-1.3886779" user="Shepard" uid="35271" visible="true" version="4" changeset="491720" timestamp="2008-10-21T22:26:32Z"/>
+ <node id="387812" lat="50.9281906" lon="-1.3910676" user="jpd" uid="21244" visible="true" version="2" changeset="350957" timestamp="2008-05-06T16:25:35Z"/>
+ <node id="247805" lat="50.9288778" lon="-1.3908240" user="Shepard" uid="35271" visible="true" version="2" changeset="47628" timestamp="2008-10-03T16:28:10Z"/>
+ <way id="8121524" user="fluteflute" uid="55782" visible="true" version="5" changeset="6893645" timestamp="2011-01-07T15:20:13Z">
+  <nd ref="5292817"/>
+  <nd ref="2073513"/>
+  <nd ref="2073383"/>
+  <nd ref="2073390"/>
+  <nd ref="2073397"/>
+  <nd ref="1088473108"/>
+  <nd ref="2073407"/>
+  <nd ref="2073423"/>
+  <tag k="bicycle" v="yes"/>
+  <tag k="foot" v="yes"/>
+  <tag k="highway" v="residential"/>
+  <tag k="horse" v="yes"/>
+  <tag k="motorcar" v="yes"/>
+  <tag k="name" v="Highfield Crescent"/>
+ </way>
+ <way id="4527205" user="fluteflute" uid="55782" visible="true" version="2" changeset="6513081" timestamp="2010-12-02T10:32:54Z">
+  <nd ref="28107724"/>
+  <nd ref="28107718"/>
+  <nd ref="1015693988"/>
+  <nd ref="28107719"/>
+  <nd ref="28107720"/>
+  <nd ref="28107721"/>
+  <nd ref="28107722"/>
+  <nd ref="28107723"/>
+  <nd ref="28107724"/>
+  <tag k="leisure" v="park"/>
+ </way>
+ <way id="8126539" user="fluteflute" uid="55782" visible="true" version="7" changeset="6893645" timestamp="2011-01-07T15:20:11Z">
+  <nd ref="544328"/>
+  <nd ref="423289"/>
+  <nd ref="544329"/>
+  <nd ref="544330"/>
+  <nd ref="387820"/>
+  <nd ref="544331"/>
+  <nd ref="247807"/>
+  <nd ref="247809"/>
+  <nd ref="2073423"/>
+  <nd ref="21689072"/>
+  <nd ref="1088473115"/>
+  <nd ref="1088473126"/>
+  <tag k="highway" v="residential"/>
+  <tag k="name" v="Welbeck Avenue"/>
+ </way>
+ <way id="1666" user="Shepard" uid="35271" visible="true" version="2" changeset="47628" timestamp="2008-10-03T16:19:04Z">
+  <nd ref="247807"/>
+  <nd ref="329467"/>
+  <nd ref="19035791"/>
+  <nd ref="518813"/>
+  <nd ref="329590"/>
+  <tag k="created_by" v="Potlatch 0.10c"/>
+  <tag k="highway" v="residential"/>
+  <tag k="name" v="Upper Shaftesbury Avenue"/>
+ </way>
+ <way id="3996456" user="Shepard" uid="35271" visible="true" version="2" changeset="47628" timestamp="2008-10-03T16:27:31Z">
+  <nd ref="20954590"/>
+  <nd ref="20954591"/>
+  <tag k="created_by" v="Potlatch 0.10c"/>
+  <tag k="highway" v="residential"/>
+  <tag k="name" v="Royston Close"/>
+ </way>
+ <way id="3996455" user="nickw" uid="94" visible="true" version="1" changeset="152830" timestamp="2006-11-10T08:43:43Z">
+  <nd ref="247806"/>
+  <nd ref="2073407"/>
+  <tag k="created_by" v="JOSM"/>
+  <tag k="highway" v="residential"/>
+  <tag k="name" v="Holyrood Avenue"/>
+ </way>
+ <way id="3996457" user="nickw" uid="94" visible="true" version="1" changeset="152830" timestamp="2006-11-10T08:43:44Z">
+  <nd ref="2073397"/>
+  <nd ref="20954592"/>
+  <nd ref="20954593"/>
+  <nd ref="530605"/>
+  <tag k="created_by" v="JOSM"/>
+  <tag k="foot" v="permissive"/>
+  <tag k="highway" v="footway"/>
+ </way>
+ <way id="1667" user="Shepard" uid="35271" visible="true" version="5" changeset="47628" timestamp="2008-10-03T16:28:10Z">
+  <nd ref="247802"/>
+  <nd ref="247803"/>
+  <nd ref="387812"/>
+  <nd ref="247804"/>
+  <nd ref="247805"/>
+  <nd ref="5292817"/>
+  <nd ref="20954590"/>
+  <nd ref="247806"/>
+  <nd ref="247807"/>
+  <tag k="bicycle" v="yes"/>
+  <tag k="created_by" v="Potlatch 0.10c"/>
+  <tag k="foot" v="yes"/>
+  <tag k="highway" v="unclassified"/>
+  <tag k="horse" v="yes"/>
+  <tag k="motorcar" v="yes"/>
+  <tag k="name" v="Shaftesbury Avenue"/>
+ </way>
+</osm>
