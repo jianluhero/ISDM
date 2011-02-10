@@ -55,7 +55,7 @@ public abstract class AbstractSampleAgent<E extends StandardEntity> extends Stan
     */
     protected List<EntityID> refugeIDs;
 
-    private Map<EntityID, Set<EntityID>> neighbours;
+    private Map<EntityID, Set<EntityID>> neighbours; 
 
     /**
        Construct an AbstractSampleAgent.

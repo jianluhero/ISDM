@@ -1,5 +1,7 @@
 package rescuecore2.standard.entities;
 
+import java.util.List;
+
 import rescuecore2.worldmodel.Entity;
 import rescuecore2.worldmodel.EntityID;
 
@@ -7,7 +9,22 @@ import rescuecore2.worldmodel.EntityID;
    The Civilian object.
  */
 public class Civilian extends Human {
-    /**
+	
+	/**
+ 	specific destination ID
+ 	the destination could be roads or buildings
+	 */
+	protected int destinationID;
+	
+    public int getDestinationID() {
+		return destinationID;
+	}
+
+	public void setDestinationID(int destinationID) {
+		this.destinationID = destinationID;
+	}
+
+	/**
        Construct a Civilian object with entirely undefined values.
        @param id The ID of this entity.
     */

@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -27,16 +26,16 @@ import java.io.IOException;
    A class for generating random scenarios.
 */
 public class RandomScenarioGenerator {
-    private static final int DEFAULT_MIN_CIVS = 50;
-    private static final int DEFAULT_MAX_CIVS = 200;
+    private static final int DEFAULT_MIN_CIVS = 3;
+    private static final int DEFAULT_MAX_CIVS = 3;
     private static final int DEFAULT_MIN_PLATOONS = 0;
-    private static final int DEFAULT_MAX_PLATOONS = 30;
+    private static final int DEFAULT_MAX_PLATOONS = 0;
     private static final int DEFAULT_MIN_CENTRES = 0;
-    private static final int DEFAULT_MAX_CENTRES = 5;
+    private static final int DEFAULT_MAX_CENTRES = 0;
     private static final int DEFAULT_MIN_REFUGES = 0;
-    private static final int DEFAULT_MAX_REFUGES = 5;
-    private static final int DEFAULT_MIN_FIRES = 1;
-    private static final int DEFAULT_MAX_FIRES = 10;
+    private static final int DEFAULT_MAX_REFUGES = 0;
+    private static final int DEFAULT_MIN_FIRES = 0;
+    private static final int DEFAULT_MAX_FIRES = 0;
 
     private int minCivs;
     private int maxCivs;
@@ -327,6 +326,7 @@ public class RandomScenarioGenerator {
             //initialise destination randomly
             int destination=all.get(random.nextInt(all.size())).getID();
    		 	result.getDestination().put(id, destination);
+   		 	System.out.println("civilian "+id+" --------> "+"destination "+destination);
         }
     }
 }

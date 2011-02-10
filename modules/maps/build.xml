@@ -49,7 +49,7 @@
   </target>
 
   <target name="map-generator" depends="maps-jar" description="Run the map generator">
-    <java classname="maps.gml.generator.GMLMapGenerator" fork="yes" dir="boot" maxmemory="1400m">
+    <java classname="maps.gml.generator.GMLMapGenerator" fork="yes" dir="boot" maxmemory="1000m">
       <classpath>
         <path refid="path.common"/>
         <path refid="path.maps.lib"/>
@@ -59,7 +59,7 @@
   </target>
 
   <target name="gml-editor" depends="maps-jar" description="Run the GML editor">
-    <java classname="maps.gml.editor.GMLEditor" fork="yes" dir="boot" maxmemory="1400m">
+    <java classname="maps.gml.editor.GMLEditor" fork="yes" dir="boot" maxmemory="1000m">
       <classpath>
         <path refid="path.common"/>
       </classpath>

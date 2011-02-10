@@ -314,7 +314,8 @@ public class Scenario {
         	EntityID id = new EntityID(start);
             Civilian c = new Civilian(new EntityID(++nextID));
             EntityID end =new EntityID(destination.get(start).intValue());
-            
+            //TODO: update civilian's destination information
+            c.setDestinationID(end.getValue());
             setupAgent(c, id, model, config);
         }
         /*for (int next : civLocations) {

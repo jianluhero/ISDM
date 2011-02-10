@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.EnumSet;
+import java.util.ArrayList;
 
 import rescuecore2.worldmodel.EntityID;
 import rescuecore2.worldmodel.ChangeSet;
@@ -39,6 +40,11 @@ public class SampleCivilian extends AbstractSampleAgent<Civilian> {
     private double helpProbability;
     private double ouchProbability;
     private int consciousThreshold;
+    
+    /**
+     run for refuge or to a specific destination
+     */
+    private boolean runForRefuge=false;
 
     @Override
     public String toString() {
@@ -105,9 +111,18 @@ public class SampleCivilian extends AbstractSampleAgent<Civilian> {
             Logger.info("Calling for help");
             say(HELP, time);
         }
-        if (damage == 0 && buriedness == 0) {
-            // Run for the refuge
-            List<EntityID> path = search.breadthFirstSearch(me().getPosition(), refugeIDs);
+        if (damage == 0 && buriedness == 0) {          
+        	List<EntityID> path;
+        	if(runForRefuge) // Run for the refuge
+        		path = search.breadthFirstSearch(me().getPosition(), refugeIDs);
+        	else
+        	{
+        		ArrayList<EntityID>des=new ArrayList<EntityID>();
+        		des.add(new EntityID(me().getDestinationID()));
+        		Logger.info("civ: "+me.getID().getValue()+ " destionation "+me.getDestinationID());
+        		path=search.breadthFirstSearch(me().getPosition(), des);
+        	}
+        		
            /* if (path != null) {
                 Logger.info("Heading for a refuge");
                 sendMove(time, path);
@@ -120,17 +135,20 @@ public class SampleCivilian extends AbstractSampleAgent<Civilian> {
             }*/
             double t=random.nextDouble();
             if (path != null) {
-            	if(t<0.75){
-                Logger.info("Heading for a refuge");
+            	//if(t<1.75){
+            		if(runForRefuge)
+            			Logger.info("Heading for a refuge");
+            		else
+            			Logger.info("Heading for a sepcific destination");
                 sendMove(time, path);
                 return;
-            	}
-            	else
-            	{
-            		Logger.info("Moving randomly");
-                    sendMove(time, randomWalk());
-                    return;
-            	}
+            	//}
+            	//else
+            	//{
+            	//	Logger.info("Moving randomly");
+              //      sendMove(time, randomWalk());
+              //      return;
+            	//}
             }
             else
             {
