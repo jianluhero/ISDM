@@ -7,7 +7,7 @@ value="sample.SampleCivilian*n" />
 description="Start the agents">
 		<echo message="Starting agents" />
 		<java classname="rescuecore2.LaunchComponents"
-classpathref="path.common" fork="yes" dir="boot" maxmemory="1300m">
+classpathref="path.common" fork="yes" dir="boot" maxmemory="1400m">
 			<arg line="${kernel.startup.agents}" />
 			<arg line="${kernel.startup.config.agents}" />
 		</java>

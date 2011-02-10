@@ -1,6 +1,7 @@
 package gis2;
 
 import maps.gml.GMLMap;
+
 import maps.gml.GMLBuilding;
 import maps.gml.GMLShape;
 import maps.MapReader;
@@ -11,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -322,6 +324,9 @@ public class RandomScenarioGenerator {
         for (int i = 0; i < civ; ++i) {
             int id = buildings.get(random.nextInt(buildings.size())).getID();
             result.addCivilian(id);
+            //initialise destination randomly
+            int destination=all.get(random.nextInt(all.size())).getID();
+   		 	result.getDestination().put(id, destination);
         }
     }
 }

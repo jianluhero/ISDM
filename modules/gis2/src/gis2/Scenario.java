@@ -1,6 +1,7 @@
 package gis2;
 
 import org.dom4j.DocumentHelper;
+
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -8,9 +9,11 @@ import org.dom4j.QName;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.Iterator;
 
 import rescuecore2.worldmodel.EntityID;
 import rescuecore2.worldmodel.Entity;
@@ -45,6 +48,8 @@ public class Scenario {
     private static final QName ROOT_QNAME = DocumentHelper.createQName("scenario", SCENARIO_NAMESPACE);
     private static final QName ID_QNAME = DocumentHelper.createQName("id", SCENARIO_NAMESPACE);
     private static final QName LOCATION_QNAME = DocumentHelper.createQName("location", SCENARIO_NAMESPACE);
+    private static final QName START_QNAME=DocumentHelper.createQName("start", SCENARIO_NAMESPACE);
+    private static final QName END_QNAME=DocumentHelper.createQName("end", SCENARIO_NAMESPACE);
 
     private static final QName SCENARIO_QNAME = DocumentHelper.createQName("scenario", SCENARIO_NAMESPACE);
     private static final QName REFUGE_QNAME = DocumentHelper.createQName("refuge", SCENARIO_NAMESPACE);
@@ -56,6 +61,7 @@ public class Scenario {
     private static final QName AC_QNAME = DocumentHelper.createQName("ambulancecentre", SCENARIO_NAMESPACE);
     private static final QName PO_QNAME = DocumentHelper.createQName("policeoffice", SCENARIO_NAMESPACE);
     private static final QName FIRE_QNAME = DocumentHelper.createQName("fire", SCENARIO_NAMESPACE);
+    private static final QName DESTINATION_QNAME = DocumentHelper.createQName("destionation", SCENARIO_NAMESPACE);
 
     private Set<Integer> refuges;
     private Set<Integer> fires;
@@ -66,6 +72,12 @@ public class Scenario {
     private Collection<Integer> fsLocations;
     private Collection<Integer> acLocations;
     private Collection<Integer> poLocations;
+    
+    /**
+    key: current location
+    value:destination location
+     */
+    private HashMap<Integer,Integer> destination;
 
     /**
        Create an empty scenario.
@@ -80,9 +92,11 @@ public class Scenario {
         fsLocations = new ArrayList<Integer>();
         poLocations = new ArrayList<Integer>();
         acLocations = new ArrayList<Integer>();
+        
+        destination=new HashMap<Integer, Integer>();
     }
 
-    /**
+	/**
        Create a scenario from an XML document.
        @param doc The document to read.
        @throws ScenarioException If the scenario is invalid.
@@ -107,6 +121,7 @@ public class Scenario {
         fsLocations.clear();
         poLocations.clear();
         acLocations.clear();
+        destination.clear();
         Element root = doc.getRootElement();
         if (!root.getQName().equals(SCENARIO_QNAME)) {
             throw new ScenarioException("Scenario document has wrong root element: expecting " + SCENARIO_QNAME + "; not " + root.getQName());
@@ -147,6 +162,10 @@ public class Scenario {
             Element e = (Element)next;
             fires.add(Integer.parseInt(e.attributeValue(LOCATION_QNAME)));
         }
+        for(Object next : root.elements(DESTINATION_QNAME)){
+        	Element e=(Element)next;
+        	destination.put(Integer.parseInt(e.attributeValue(START_QNAME)),Integer.parseInt(e.attributeValue(END_QNAME)));
+        }
     }
 
     /**
@@ -182,6 +201,16 @@ public class Scenario {
         }
         for (int next : acLocations) {
             root.addElement(AC_QNAME).addAttribute(LOCATION_QNAME, String.valueOf(next));
+        }
+        Iterator<Integer> src=destination.keySet().iterator();
+        while(src.hasNext())
+        {
+        	Integer start=src.next();
+        	Integer end=destination.get(start);
+        	Element e=DocumentHelper.createElement(DESTINATION_QNAME);
+        	e.addAttribute(START_QNAME, String.valueOf(start.intValue()));
+        	e.addAttribute(END_QNAME, String.valueOf(end.intValue()));
+        	root.add(e);
         }
         root.addNamespace("scenario", SCENARIO_NAMESPACE_URI);
     }
@@ -275,12 +304,25 @@ public class Scenario {
             model.addEntity(a);
             Logger.debug("Converted " + b + " into " + a);
         }
-        Logger.debug("Creating " + civLocations.size() + " civilians");
-        for (int next : civLocations) {
-            EntityID id = new EntityID(next);
+        Logger.debug("Creating " + civLocations.size() + " civilians and intialise their destinations");
+        if(civLocations.size()!=destination.size())
+        	Logger.error("the number of civilians is not mathced with the number of civilians destination");
+        Iterator<Integer>src=destination.keySet().iterator();
+        while(src.hasNext())
+        {
+        	Integer start=src.next();
+        	EntityID id = new EntityID(start);
             Civilian c = new Civilian(new EntityID(++nextID));
+            EntityID end =new EntityID(destination.get(start).intValue());
+            
             setupAgent(c, id, model, config);
         }
+        /*for (int next : civLocations) {
+            EntityID id = new EntityID(next);
+            Civilian c = new Civilian(new EntityID(++nextID));
+            EntityID end =new EntityID(destination.get(new Integer(id)).intValue());
+            setupAgent(c, id, model, config);
+        }*/
     }
 
     /**
@@ -356,6 +398,18 @@ public class Scenario {
     }
 
     /**
+     * get the destination of civilians
+     * @return
+     */ 
+    public HashMap<Integer, Integer> getDestination() {
+		return destination;
+	}
+
+	public void setDestination(HashMap<Integer, Integer> destination) {
+		this.destination = destination;
+	}
+
+	/**
        Set the set of fire locations.
        @param newLocations The new set of locations.
     */
