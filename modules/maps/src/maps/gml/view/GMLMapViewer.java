@@ -33,8 +33,8 @@ import maps.gml.GMLTools;
    A component for viewing GML maps.
 */
 public class GMLMapViewer extends JComponent {
-    private static final Color BUILDING_COLOUR = new Color(0, 255, 0, 128); // Transparent lime
-    private static final Color ROAD_COLOUR = new Color(192, 192, 192, 128); // Transparent light gray
+    private static final Color BUILDING_COLOUR = Color.GRAY;//new Color(0, 255, 0, 128); bing // Transparent lime
+    private static final Color ROAD_COLOUR = Color.LIGHT_GRAY;//new Color(192, 192, 192, 128); bing // Transparent light gray
     private static final Color SPACE_COLOUR = new Color(0, 128, 0, 128); // Transparent green
 
     private static final Color GRID_COLOUR = new Color(64, 64, 64, 64); // Transparent dark gray

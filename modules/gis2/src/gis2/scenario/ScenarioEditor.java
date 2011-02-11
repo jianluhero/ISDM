@@ -125,7 +125,8 @@ public class ScenarioEditor extends JPanel {
         undoManager = new UndoManager();
         viewer.setPreferredSize(new Dimension(VIEWER_PREFERRED_SIZE, VIEWER_PREFERRED_SIZE));
         inspector.setPreferredSize(new Dimension(INSPECTOR_PREFERRED_WIDTH, INSPECTOR_PREFERRED_HEIGHT));
-        viewer.setBackground(Color.GRAY);
+        viewer.setBackground(Color.darkGray);
+        //viewer.setBackground(Color.GRAY);
         viewer.getPanZoomListener().setPanOnRightMouse();
         changed = false;
         JToolBar fileToolbar = new JToolBar("File");

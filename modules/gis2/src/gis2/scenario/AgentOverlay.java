@@ -1,6 +1,9 @@
 package gis2.scenario;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 import java.util.Map;
 
 import maps.gml.view.Overlay;
@@ -28,6 +31,8 @@ public class AgentOverlay implements Overlay {
         this.editor = editor;
     }
 
+    public static final int SIZE=10;
+    
     @Override
     public void render(Graphics2D g, ScreenTransform transform) {
         // Count agents in each location
@@ -69,10 +74,14 @@ public class AgentOverlay implements Overlay {
         }
         // Now draw them
         for (Map.Entry<Integer, Integer> next : civs.entrySet()) {
-            GMLShape shape = editor.getMap().getShape(next.getKey());
+           GMLShape shape = editor.getMap().getShape(next.getKey());
             int count = next.getValue();
             int x = transform.xToScreen(shape.getCentreX());
             int y = transform.yToScreen(shape.getCentreY()) + CIV_OFFSET;
+        	//change by bing
+        	Shape show = new Ellipse2D.Double(x - SIZE / 2, y - SIZE / 2, SIZE, SIZE);
+            g.setColor(Color.GREEN);
+            g.fill(show);
             g.drawString(count + " civs", x, y);
         }
         for (Map.Entry<Integer, Integer> next : fbs.entrySet()) {
