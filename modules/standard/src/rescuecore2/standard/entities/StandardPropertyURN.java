@@ -40,6 +40,7 @@ public enum StandardPropertyURN {
     BURIEDNESS(PROPERTY_URN_PREFIX + "buriedness"),
     TRAVEL_DISTANCE(PROPERTY_URN_PREFIX + "traveldistance"),
     WATER_QUANTITY(PROPERTY_URN_PREFIX + "waterquantity"),
+    DESTINATION(PROPERTY_URN_PREFIX+"destination"),
 
     TEMPERATURE(PROPERTY_URN_PREFIX + "temperature"),
     IMPORTANCE(PROPERTY_URN_PREFIX + "importance");

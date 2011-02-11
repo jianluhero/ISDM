@@ -22,6 +22,8 @@ public abstract class Human extends StandardEntity {
     private IntProperty hp;
     private IntProperty damage;
     private IntProperty buriedness;
+    
+    private EntityRefProperty destination;
 
     /**
        Construct a Human object with entirely undefined property values.
@@ -39,7 +41,8 @@ public abstract class Human extends StandardEntity {
         hp = new IntProperty(StandardPropertyURN.HP);
         damage = new IntProperty(StandardPropertyURN.DAMAGE);
         buriedness = new IntProperty(StandardPropertyURN.BURIEDNESS);
-        registerProperties(x, y, position, positionHistory, travelDistance, direction, stamina, hp, damage, buriedness);
+        destination= new EntityRefProperty(StandardPropertyURN.DESTINATION);
+        registerProperties(x, y, position,destination, positionHistory, travelDistance, direction, stamina, hp, damage, buriedness);
     }
 
     /**
@@ -58,7 +61,8 @@ public abstract class Human extends StandardEntity {
         hp = new IntProperty(other.hp);
         damage = new IntProperty(other.damage);
         buriedness = new IntProperty(other.buriedness);
-        registerProperties(x, y, position, positionHistory, travelDistance, direction, stamina, hp, damage, buriedness);
+        destination=new EntityRefProperty(other.destination);
+        registerProperties(x, y, position,destination, positionHistory, travelDistance, direction, stamina, hp, damage, buriedness);
     }
 
     @Override
@@ -91,11 +95,23 @@ public abstract class Human extends StandardEntity {
             return buriedness;
         case TRAVEL_DISTANCE:
             return travelDistance;
+        case DESTINATION:
+        	return destination;
         default:
             return super.getProperty(urn);
         }
     }
 
+    public void setDestination(EntityID des)
+    {
+    	this.destination.setValue(des);
+    }
+    
+    public EntityID getDestination()
+    {
+    	return destination.getValue();
+    }
+    
     @Override
     public Pair<Integer, Integer> getLocation(WorldModel<? extends StandardEntity> world) {
         if (x.isDefined() && y.isDefined()) {
