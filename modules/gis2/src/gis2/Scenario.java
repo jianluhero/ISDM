@@ -1,7 +1,7 @@
 package gis2;
 
+import org.dom4j.Attribute;
 import org.dom4j.DocumentHelper;
-
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import rescuecore2.worldmodel.EntityID;
 import rescuecore2.worldmodel.Entity;
@@ -49,7 +51,7 @@ public class Scenario {
     private static final QName ID_QNAME = DocumentHelper.createQName("id", SCENARIO_NAMESPACE);
     private static final QName LOCATION_QNAME = DocumentHelper.createQName("location", SCENARIO_NAMESPACE);
     private static final QName START_QNAME=DocumentHelper.createQName("start", SCENARIO_NAMESPACE);
-    private static final QName END_QNAME=DocumentHelper.createQName("end", SCENARIO_NAMESPACE);
+    private static final QName ENDS_QNAME=DocumentHelper.createQName("ends", SCENARIO_NAMESPACE);
 
     private static final QName SCENARIO_QNAME = DocumentHelper.createQName("scenario", SCENARIO_NAMESPACE);
     private static final QName REFUGE_QNAME = DocumentHelper.createQName("refuge", SCENARIO_NAMESPACE);
@@ -74,10 +76,11 @@ public class Scenario {
     private Collection<Integer> poLocations;
     
     /**
-    key: current location
-    value:destination location
+    key: current location, keyset() will give all civilians' initial locations
+    value: destination location
+    TODO: the information saved in civLocationAndDestinations is partly duplicate with civLocations
      */
-    private HashMap<Integer,Integer> destination;
+    private HashMap<Integer, ArrayList<Integer>> civLocationAndDestinations;
 
     /**
        Create an empty scenario.
@@ -93,7 +96,7 @@ public class Scenario {
         poLocations = new ArrayList<Integer>();
         acLocations = new ArrayList<Integer>();
         
-        destination=new HashMap<Integer, Integer>();
+        civLocationAndDestinations=new HashMap<Integer, ArrayList<Integer>>();
     }
 
 	/**
@@ -121,7 +124,7 @@ public class Scenario {
         fsLocations.clear();
         poLocations.clear();
         acLocations.clear();
-        destination.clear();
+        civLocationAndDestinations.clear();
         Element root = doc.getRootElement();
         if (!root.getQName().equals(SCENARIO_QNAME)) {
             throw new ScenarioException("Scenario document has wrong root element: expecting " + SCENARIO_QNAME + "; not " + root.getQName());
@@ -164,7 +167,14 @@ public class Scenario {
         }
         for(Object next : root.elements(DESTINATION_QNAME)){
         	Element e=(Element)next;
-        	destination.put(Integer.parseInt(e.attributeValue(START_QNAME)),Integer.parseInt(e.attributeValue(END_QNAME)));
+        	Integer loc=Integer.parseInt(e.attributeValue(START_QNAME));
+        	StringTokenizer st=new StringTokenizer(e.attributeValue(ENDS_QNAME),",");
+        	ArrayList<Integer> desList=new ArrayList<Integer>();
+        	while(st.hasMoreTokens())
+        	{
+        		desList.add(Integer.parseInt(st.nextToken()));
+        	}
+        	civLocationAndDestinations.put(loc,desList);
         }
     }
 
@@ -202,14 +212,19 @@ public class Scenario {
         for (int next : acLocations) {
             root.addElement(AC_QNAME).addAttribute(LOCATION_QNAME, String.valueOf(next));
         }
-        Iterator<Integer> src=destination.keySet().iterator();
+        Iterator<Integer> src=civLocationAndDestinations.keySet().iterator();
         while(src.hasNext())
         {
-        	Integer start=src.next();
-        	Integer end=destination.get(start);
+        	Integer next=src.next();
         	Element e=DocumentHelper.createElement(DESTINATION_QNAME);
-        	e.addAttribute(START_QNAME, String.valueOf(start.intValue()));
-        	e.addAttribute(END_QNAME, String.valueOf(end.intValue()));
+        	e.addAttribute(START_QNAME,String.valueOf(next.intValue()));        	
+        	ArrayList<Integer> des=civLocationAndDestinations.get(next);
+        	String ends="";
+        	for(int d : des)
+        	{
+        		ends=ends+d+",";
+        	}
+        	e.addAttribute(ENDS_QNAME, ends);
         	root.add(e);
         }
         root.addNamespace("scenario", SCENARIO_NAMESPACE_URI);
@@ -304,19 +319,23 @@ public class Scenario {
             model.addEntity(a);
             Logger.debug("Converted " + b + " into " + a);
         }
-        Logger.debug("Creating " + civLocations.size() + " civilians and intialise their destinations");
-        if(civLocations.size()!=destination.size())
-        	Logger.error("the number of civilians is not mathced with the number of civilians destination");
-        Iterator<Integer>src=destination.keySet().iterator();
+        Logger.debug("Creating " + civLocationAndDestinations.size() + " civilians and intialise their destinations");
+        Iterator<Integer>src=civLocationAndDestinations.keySet().iterator();
         while(src.hasNext())
         {
-        	Integer start=src.next();
-        	EntityID id = new EntityID(start);
+        	Integer loc=src.next();
+        	EntityID id = new EntityID(loc);
             Civilian c = new Civilian(new EntityID(++nextID));
-            EntityID end =new EntityID(destination.get(start).intValue());
-            //TODO: update civilian's destination information
             setupAgent(c, id, model, config);
-            c.setDestination(end);
+            
+            //update civilian's destination information
+            ArrayList<Integer>desS=civLocationAndDestinations.get(loc);
+            List<EntityID> des =new ArrayList<EntityID>();
+            for(int d : desS)
+            {
+            	des.add(new EntityID(d));
+            }
+            c.setDestinations(des);
         }
         /*for (int next : civLocations) {
             EntityID id = new EntityID(next);
@@ -402,12 +421,12 @@ public class Scenario {
      * get the destination of civilians
      * @return
      */ 
-    public HashMap<Integer, Integer> getDestination() {
-		return destination;
+    public HashMap<Integer, ArrayList<Integer>> getDestination() {
+		return civLocationAndDestinations;
 	}
 
-	public void setDestination(HashMap<Integer, Integer> destination) {
-		this.destination = destination;
+	public void setDestination(HashMap<Integer, ArrayList<Integer>> destination) {
+		this.civLocationAndDestinations = destination;
 	}
 
 	/**

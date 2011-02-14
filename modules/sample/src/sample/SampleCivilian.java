@@ -118,10 +118,8 @@ public class SampleCivilian extends AbstractSampleAgent<Civilian> {
         		path = search.breadthFirstSearch(me().getPosition(), refugeIDs);
         	else
         	{
-        		ArrayList<EntityID>des=new ArrayList<EntityID>();
-        		des.add(me().getDestination());
-        		Logger.info("civ: "+me.getID().getValue()+ " destionation "+me().getDestination());
-        		path=search.breadthFirstSearch(me().getPosition(), des);
+        	//	Logger.info("civ: "+me.getID().getValue()+ " destionation "+me().getDestination());
+        		path=search.breadthFirstSearch(me().getPosition(), me().getDestinations());
         	}
         		
            /* if (path != null) {

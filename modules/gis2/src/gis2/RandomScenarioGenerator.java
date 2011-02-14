@@ -323,10 +323,16 @@ public class RandomScenarioGenerator {
         for (int i = 0; i < civ; ++i) {
             int id = buildings.get(random.nextInt(buildings.size())).getID();
             result.addCivilian(id);
-            //initialise destination randomly
-            int destination=all.get(random.nextInt(all.size())).getID();
-   		 	result.getDestination().put(id, destination);
-   		 	System.out.println("civilian "+id+" --------> "+"destination "+destination);
+            //initialise destination randomly bing
+            ArrayList<Integer>des=new ArrayList<Integer>();
+            for(int j=0;j<2;j++)
+            {
+            	int destination=all.get(random.nextInt(all.size())).getID();
+            	des.add(destination);
+            }
+            
+   		 	result.getDestination().put(id, des);
+   		 	System.out.println("civilian "+id+" --------> "+"destinations "+des.get(0).intValue()+" "+des.get(1).intValue());
         }
     }
 }

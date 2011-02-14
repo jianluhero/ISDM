@@ -1,11 +1,15 @@
 package rescuecore2.standard.entities;
 
+import java.util.List;
+
 import rescuecore2.worldmodel.EntityID;
+
 import rescuecore2.worldmodel.WorldModel;
 import rescuecore2.worldmodel.Property;
 import rescuecore2.worldmodel.properties.IntProperty;
 import rescuecore2.worldmodel.properties.IntArrayProperty;
 import rescuecore2.worldmodel.properties.EntityRefProperty;
+import rescuecore2.worldmodel.properties.EntityRefListProperty;
 import rescuecore2.misc.Pair;
 
 /**
@@ -23,7 +27,7 @@ public abstract class Human extends StandardEntity {
     private IntProperty damage;
     private IntProperty buriedness;
     
-    private EntityRefProperty destination;
+    private EntityRefListProperty destination;
 
     /**
        Construct a Human object with entirely undefined property values.
@@ -41,7 +45,7 @@ public abstract class Human extends StandardEntity {
         hp = new IntProperty(StandardPropertyURN.HP);
         damage = new IntProperty(StandardPropertyURN.DAMAGE);
         buriedness = new IntProperty(StandardPropertyURN.BURIEDNESS);
-        destination= new EntityRefProperty(StandardPropertyURN.DESTINATION);
+        destination= new EntityRefListProperty(StandardPropertyURN.DESTINATION);
         registerProperties(x, y, position,destination, positionHistory, travelDistance, direction, stamina, hp, damage, buriedness);
     }
 
@@ -61,7 +65,7 @@ public abstract class Human extends StandardEntity {
         hp = new IntProperty(other.hp);
         damage = new IntProperty(other.damage);
         buriedness = new IntProperty(other.buriedness);
-        destination=new EntityRefProperty(other.destination);
+        destination=new EntityRefListProperty(other.destination);
         registerProperties(x, y, position,destination, positionHistory, travelDistance, direction, stamina, hp, damage, buriedness);
     }
 
@@ -102,12 +106,12 @@ public abstract class Human extends StandardEntity {
         }
     }
 
-    public void setDestination(EntityID des)
+    public void setDestinations(List<EntityID> des)
     {
     	this.destination.setValue(des);
     }
     
-    public EntityID getDestination()
+    public List<EntityID> getDestinations()
     {
     	return destination.getValue();
     }
