@@ -1,5 +1,11 @@
 package gis2.scenario;
 
+import gis2.Destination;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import javax.swing.undo.AbstractUndoableEdit;
 
 import maps.gml.GMLShape;
@@ -29,6 +35,22 @@ public class PlaceCivilianTool extends ShapeTool {
     @Override
     protected void processClick(GMLShape shape) {
         editor.getScenario().addCivilian(shape.getID());
+        //set refuge as default destination
+        ArrayList<Destination>des=editor.getScenario().getDestination();
+        ArrayList<Integer> refuge=new ArrayList<Integer>();
+        Iterator<Integer> temp=editor.getScenario().getRefuges().iterator();
+        while(temp.hasNext())
+        {
+        	refuge.add(temp.next());
+        }
+        if(refuge.size()==0)//no refuge, no move
+        {
+        	refuge.add(new Integer(shape.getID()));
+        }
+        Destination d=new Destination(shape.getID());
+        d.setEnds(refuge);
+        des.add(d);
+        
         editor.setChanged();
         editor.updateOverlays();
         editor.addEdit(new AddCivilianEdit(shape.getID()));

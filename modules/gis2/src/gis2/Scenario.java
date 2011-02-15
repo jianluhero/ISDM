@@ -80,7 +80,7 @@ public class Scenario {
     value: destination location
     TODO: the information saved in civLocationAndDestinations is partly duplicate with civLocations
      */
-    private HashMap<Integer, ArrayList<Integer>> civLocationAndDestinations;
+    private ArrayList<Destination> civLocationAndDestinations;
 
     /**
        Create an empty scenario.
@@ -96,7 +96,7 @@ public class Scenario {
         poLocations = new ArrayList<Integer>();
         acLocations = new ArrayList<Integer>();
         
-        civLocationAndDestinations=new HashMap<Integer, ArrayList<Integer>>();
+        civLocationAndDestinations=new ArrayList<Destination>();
     }
 
 	/**
@@ -168,13 +168,15 @@ public class Scenario {
         for(Object next : root.elements(DESTINATION_QNAME)){
         	Element e=(Element)next;
         	Integer loc=Integer.parseInt(e.attributeValue(START_QNAME));
+        	Destination d=new Destination(loc.intValue());
         	StringTokenizer st=new StringTokenizer(e.attributeValue(ENDS_QNAME),",");
         	ArrayList<Integer> desList=new ArrayList<Integer>();
         	while(st.hasMoreTokens())
         	{
         		desList.add(Integer.parseInt(st.nextToken()));
         	}
-        	civLocationAndDestinations.put(loc,desList);
+        	d.setEnds(desList);
+        	civLocationAndDestinations.add(d);
         }
     }
 
@@ -212,17 +214,15 @@ public class Scenario {
         for (int next : acLocations) {
             root.addElement(AC_QNAME).addAttribute(LOCATION_QNAME, String.valueOf(next));
         }
-        Iterator<Integer> src=civLocationAndDestinations.keySet().iterator();
-        while(src.hasNext())
+        for (Destination d : civLocationAndDestinations)
         {
-        	Integer next=src.next();
         	Element e=DocumentHelper.createElement(DESTINATION_QNAME);
-        	e.addAttribute(START_QNAME,String.valueOf(next.intValue()));        	
-        	ArrayList<Integer> des=civLocationAndDestinations.get(next);
+        	e.addAttribute(START_QNAME,String.valueOf(d.getStart()));        	
+        	ArrayList<Integer> des=d.getEnds();
         	String ends="";
-        	for(int d : des)
+        	for(int l : des)
         	{
-        		ends=ends+d+",";
+        		ends=ends+l+",";
         	}
         	e.addAttribute(ENDS_QNAME, ends);
         	root.add(e);
@@ -320,20 +320,18 @@ public class Scenario {
             Logger.debug("Converted " + b + " into " + a);
         }
         Logger.debug("Creating " + civLocationAndDestinations.size() + " civilians and intialise their destinations");
-        Iterator<Integer>src=civLocationAndDestinations.keySet().iterator();
-        while(src.hasNext())
+        for(Destination d : civLocationAndDestinations)
         {
-        	Integer loc=src.next();
-        	EntityID id = new EntityID(loc);
+        	EntityID id = new EntityID(d.getStart());
             Civilian c = new Civilian(new EntityID(++nextID));
             setupAgent(c, id, model, config);
             
             //update civilian's destination information
-            ArrayList<Integer>desS=civLocationAndDestinations.get(loc);
+            ArrayList<Integer>desS=d.getEnds();
             List<EntityID> des =new ArrayList<EntityID>();
-            for(int d : desS)
+            for(int l : desS)
             {
-            	des.add(new EntityID(d));
+            	des.add(new EntityID(l));
             }
             c.setDestinations(des);
         }
@@ -421,11 +419,11 @@ public class Scenario {
      * get the destination of civilians
      * @return
      */ 
-    public HashMap<Integer, ArrayList<Integer>> getDestination() {
+    public ArrayList<Destination> getDestination() {
 		return civLocationAndDestinations;
 	}
 
-	public void setDestination(HashMap<Integer, ArrayList<Integer>> destination) {
+	public void setDestination(ArrayList<Destination> destination) {
 		this.civLocationAndDestinations = destination;
 	}
 

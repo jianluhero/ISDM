@@ -1,5 +1,11 @@
 package gis2.scenario;
 
+import gis2.Destination;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import javax.swing.undo.AbstractUndoableEdit;
 
 import maps.gml.GMLShape;
@@ -29,6 +35,18 @@ public class RemoveCivilianTool extends ShapeTool {
     @Override
     protected void processClick(GMLShape shape) {
         editor.getScenario().removeCivilian(shape.getID());
+        
+        //remove the corresponding destination as well
+        ArrayList<Destination>des=editor.getScenario().getDestination();
+        for(int i=0;i<des.size();i++)
+        {
+        	if(des.get(i).getStart()==shape.getID())
+        	{
+        		des.remove(i);
+        		break;
+        	}
+        }
+        
         editor.setChanged();
         editor.updateOverlays();
         editor.addEdit(new RemoveCivilianEdit(shape.getID()));

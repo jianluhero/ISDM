@@ -330,8 +330,9 @@ public class RandomScenarioGenerator {
             	int destination=all.get(random.nextInt(all.size())).getID();
             	des.add(destination);
             }
-            
-   		 	result.getDestination().put(id, des);
+            Destination d=new Destination(id);
+            d.setEnds(des);
+   		 	result.getDestination().add(d);
    		 	System.out.println("civilian "+id+" --------> "+"destinations "+des.get(0).intValue()+" "+des.get(1).intValue());
         }
     }

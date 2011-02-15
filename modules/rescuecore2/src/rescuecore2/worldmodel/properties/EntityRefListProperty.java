@@ -119,8 +119,6 @@ public class EntityRefListProperty extends AbstractProperty {
             }
         }
         else {
-        	System.out.println("=============="+p.getClass().getName());
-        	
             throw new IllegalArgumentException(this + " cannot take value from " + p);
         }
     }
