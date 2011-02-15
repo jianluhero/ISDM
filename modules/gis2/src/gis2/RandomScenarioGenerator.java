@@ -26,14 +26,14 @@ import java.io.IOException;
    A class for generating random scenarios.
 */
 public class RandomScenarioGenerator {
-    private static final int DEFAULT_MIN_CIVS = 3;
-    private static final int DEFAULT_MAX_CIVS = 3;
+    private static final int DEFAULT_MIN_CIVS = 100;
+    private static final int DEFAULT_MAX_CIVS = 100;
     private static final int DEFAULT_MIN_PLATOONS = 0;
     private static final int DEFAULT_MAX_PLATOONS = 0;
     private static final int DEFAULT_MIN_CENTRES = 0;
     private static final int DEFAULT_MAX_CENTRES = 0;
-    private static final int DEFAULT_MIN_REFUGES = 0;
-    private static final int DEFAULT_MAX_REFUGES = 0;
+    private static final int DEFAULT_MIN_REFUGES = 2;
+    private static final int DEFAULT_MAX_REFUGES = 2;
     private static final int DEFAULT_MIN_FIRES = 0;
     private static final int DEFAULT_MAX_FIRES = 0;
 
@@ -324,6 +324,8 @@ public class RandomScenarioGenerator {
             int id = buildings.get(random.nextInt(buildings.size())).getID();
             result.addCivilian(id);
             //initialise destination randomly bing
+            //TODO: need to configure destination according to some profile,which consider time, specific city map and so on
+            //the destinations can be multiple, and can be mixed with refuge, have some probability for each possible destination.
             ArrayList<Integer>des=new ArrayList<Integer>();
             for(int j=0;j<2;j++)
             {

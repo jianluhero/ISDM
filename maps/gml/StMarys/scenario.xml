@@ -1,14 +1,206 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <scenario:scenario xmlns:scenario="urn:roborescue:map:scenario">
-  <scenario:civilian scenario:location="8113"/>
-  <scenario:civilian scenario:location="347"/>
-  <scenario:civilian scenario:location="67794"/>
+  <scenario:refuge scenario:location="7965"/>
+  <scenario:refuge scenario:location="8113"/>
+  <scenario:civilian scenario:location="10815"/>
+  <scenario:civilian scenario:location="11083"/>
+  <scenario:civilian scenario:location="11065"/>
+  <scenario:civilian scenario:location="7505"/>
+  <scenario:civilian scenario:location="8877"/>
+  <scenario:civilian scenario:location="11803"/>
+  <scenario:civilian scenario:location="325"/>
+  <scenario:civilian scenario:location="8101"/>
   <scenario:civilian scenario:location="67792"/>
+  <scenario:civilian scenario:location="325"/>
+  <scenario:civilian scenario:location="8965"/>
+  <scenario:civilian scenario:location="4501"/>
+  <scenario:civilian scenario:location="67858"/>
+  <scenario:civilian scenario:location="10453"/>
+  <scenario:civilian scenario:location="67796"/>
+  <scenario:civilian scenario:location="7949"/>
+  <scenario:civilian scenario:location="10815"/>
+  <scenario:civilian scenario:location="185"/>
+  <scenario:civilian scenario:location="8919"/>
+  <scenario:civilian scenario:location="6445"/>
+  <scenario:civilian scenario:location="11791"/>
+  <scenario:civilian scenario:location="67790"/>
+  <scenario:civilian scenario:location="367"/>
+  <scenario:civilian scenario:location="7107"/>
+  <scenario:civilian scenario:location="7055"/>
+  <scenario:civilian scenario:location="67627"/>
+  <scenario:civilian scenario:location="11191"/>
+  <scenario:civilian scenario:location="8919"/>
+  <scenario:civilian scenario:location="9059"/>
+  <scenario:civilian scenario:location="4501"/>
+  <scenario:civilian scenario:location="693"/>
+  <scenario:civilian scenario:location="67706"/>
+  <scenario:civilian scenario:location="11215"/>
+  <scenario:civilian scenario:location="9223"/>
+  <scenario:civilian scenario:location="11065"/>
+  <scenario:civilian scenario:location="11111"/>
+  <scenario:civilian scenario:location="581"/>
+  <scenario:civilian scenario:location="563"/>
+  <scenario:civilian scenario:location="67795"/>
+  <scenario:civilian scenario:location="483"/>
+  <scenario:civilian scenario:location="543"/>
+  <scenario:civilian scenario:location="10661"/>
+  <scenario:civilian scenario:location="7825"/>
+  <scenario:civilian scenario:location="247"/>
+  <scenario:civilian scenario:location="10815"/>
+  <scenario:civilian scenario:location="67628"/>
+  <scenario:civilian scenario:location="9025"/>
+  <scenario:civilian scenario:location="10661"/>
+  <scenario:civilian scenario:location="6907"/>
+  <scenario:civilian scenario:location="11791"/>
+  <scenario:civilian scenario:location="693"/>
+  <scenario:civilian scenario:location="8965"/>
+  <scenario:civilian scenario:location="11143"/>
+  <scenario:civilian scenario:location="347"/>
+  <scenario:civilian scenario:location="467"/>
+  <scenario:civilian scenario:location="67788"/>
   <scenario:civilian scenario:location="67791"/>
-  <scenario:destionation scenario:start="8113" scenario:ends="66888,67068,"/>
-  <scenario:destionation scenario:start="347" scenario:ends="66885,67630,"/>
-  <scenario:destionation scenario:start="67794" scenario:ends="67794,"/>
-  <scenario:destionation scenario:start="67792" scenario:ends="67792,"/>
-  <scenario:destionation scenario:start="67791" scenario:ends="67791,"/>
+  <scenario:civilian scenario:location="67793"/>
+  <scenario:civilian scenario:location="6135"/>
+  <scenario:civilian scenario:location="8905"/>
+  <scenario:civilian scenario:location="7799"/>
+  <scenario:civilian scenario:location="67708"/>
+  <scenario:civilian scenario:location="7825"/>
+  <scenario:civilian scenario:location="11277"/>
+  <scenario:civilian scenario:location="67791"/>
+  <scenario:civilian scenario:location="543"/>
+  <scenario:civilian scenario:location="6079"/>
+  <scenario:civilian scenario:location="10927"/>
+  <scenario:civilian scenario:location="67628"/>
+  <scenario:civilian scenario:location="4715"/>
+  <scenario:civilian scenario:location="67798"/>
+  <scenario:civilian scenario:location="6941"/>
+  <scenario:civilian scenario:location="6871"/>
+  <scenario:civilian scenario:location="8965"/>
+  <scenario:civilian scenario:location="8499"/>
+  <scenario:civilian scenario:location="7577"/>
+  <scenario:civilian scenario:location="7493"/>
+  <scenario:civilian scenario:location="6907"/>
+  <scenario:civilian scenario:location="505"/>
+  <scenario:civilian scenario:location="7965"/>
+  <scenario:civilian scenario:location="6907"/>
+  <scenario:civilian scenario:location="467"/>
+  <scenario:civilian scenario:location="67708"/>
+  <scenario:civilian scenario:location="7601"/>
+  <scenario:civilian scenario:location="7799"/>
+  <scenario:civilian scenario:location="581"/>
+  <scenario:civilian scenario:location="67706"/>
+  <scenario:civilian scenario:location="11065"/>
+  <scenario:civilian scenario:location="8951"/>
+  <scenario:civilian scenario:location="67798"/>
+  <scenario:civilian scenario:location="67714"/>
+  <scenario:civilian scenario:location="11237"/>
+  <scenario:civilian scenario:location="383"/>
+  <scenario:civilian scenario:location="7001"/>
+  <scenario:civilian scenario:location="7949"/>
+  <scenario:civilian scenario:location="7187"/>
+  <scenario:civilian scenario:location="6941"/>
+  <scenario:civilian scenario:location="8965"/>
+  <scenario:civilian scenario:location="8905"/>
+  <scenario:civilian scenario:location="11143"/>
+  <scenario:destionation scenario:start="10815" scenario:ends="67208,67217,"/>
+  <scenario:destionation scenario:start="11083" scenario:ends="67797,67086,"/>
+  <scenario:destionation scenario:start="11065" scenario:ends="4715,67212,"/>
+  <scenario:destionation scenario:start="7505" scenario:ends="67792,67095,"/>
+  <scenario:destionation scenario:start="8877" scenario:ends="8499,66992,"/>
+  <scenario:destionation scenario:start="11803" scenario:ends="67538,7539,"/>
+  <scenario:destionation scenario:start="325" scenario:ends="67178,67343,"/>
+  <scenario:destionation scenario:start="8101" scenario:ends="66883,67081,"/>
+  <scenario:destionation scenario:start="67792" scenario:ends="67128,67165,"/>
+  <scenario:destionation scenario:start="325" scenario:ends="67032,67091,"/>
+  <scenario:destionation scenario:start="8965" scenario:ends="67189,67414,"/>
+  <scenario:destionation scenario:start="4501" scenario:ends="67185,67593,"/>
+  <scenario:destionation scenario:start="67858" scenario:ends="66904,67299,"/>
+  <scenario:destionation scenario:start="10453" scenario:ends="67146,67514,"/>
+  <scenario:destionation scenario:start="67796" scenario:ends="11291,67514,"/>
+  <scenario:destionation scenario:start="7949" scenario:ends="67344,66969,"/>
+  <scenario:destionation scenario:start="10815" scenario:ends="67495,67346,"/>
+  <scenario:destionation scenario:start="185" scenario:ends="67234,67281,"/>
+  <scenario:destionation scenario:start="8919" scenario:ends="66982,67221,"/>
+  <scenario:destionation scenario:start="6445" scenario:ends="67074,11803,"/>
+  <scenario:destionation scenario:start="11791" scenario:ends="67320,67031,"/>
+  <scenario:destionation scenario:start="67790" scenario:ends="383,8951,"/>
+  <scenario:destionation scenario:start="367" scenario:ends="67797,67060,"/>
+  <scenario:destionation scenario:start="7107" scenario:ends="67283,67244,"/>
+  <scenario:destionation scenario:start="7055" scenario:ends="67408,66880,"/>
+  <scenario:destionation scenario:start="67627" scenario:ends="67477,67235,"/>
+  <scenario:destionation scenario:start="11191" scenario:ends="563,67159,"/>
+  <scenario:destionation scenario:start="8919" scenario:ends="66940,6961,"/>
+  <scenario:destionation scenario:start="9059" scenario:ends="66922,67408,"/>
+  <scenario:destionation scenario:start="4501" scenario:ends="7155,67289,"/>
+  <scenario:destionation scenario:start="693" scenario:ends="10839,66919,"/>
+  <scenario:destionation scenario:start="67706" scenario:ends="67185,67062,"/>
+  <scenario:destionation scenario:start="11215" scenario:ends="6079,66895,"/>
+  <scenario:destionation scenario:start="9223" scenario:ends="67331,67207,"/>
+  <scenario:destionation scenario:start="11065" scenario:ends="67858,5505,"/>
+  <scenario:destionation scenario:start="11111" scenario:ends="67013,7479,"/>
+  <scenario:destionation scenario:start="581" scenario:ends="67208,67281,"/>
+  <scenario:destionation scenario:start="563" scenario:ends="67901,66937,"/>
+  <scenario:destionation scenario:start="67795" scenario:ends="67356,67635,"/>
+  <scenario:destionation scenario:start="483" scenario:ends="67886,67593,"/>
+  <scenario:destionation scenario:start="543" scenario:ends="67081,11047,"/>
+  <scenario:destionation scenario:start="10661" scenario:ends="10927,6871,"/>
+  <scenario:destionation scenario:start="7825" scenario:ends="66903,67577,"/>
+  <scenario:destionation scenario:start="247" scenario:ends="67073,67017,"/>
+  <scenario:destionation scenario:start="10815" scenario:ends="66988,67281,"/>
+  <scenario:destionation scenario:start="67628" scenario:ends="6361,66977,"/>
+  <scenario:destionation scenario:start="9025" scenario:ends="67787,67235,"/>
+  <scenario:destionation scenario:start="10661" scenario:ends="67071,67790,"/>
+  <scenario:destionation scenario:start="6907" scenario:ends="66942,67886,"/>
+  <scenario:destionation scenario:start="11791" scenario:ends="67481,67346,"/>
+  <scenario:destionation scenario:start="693" scenario:ends="66993,67714,"/>
+  <scenario:destionation scenario:start="8965" scenario:ends="67886,66891,"/>
+  <scenario:destionation scenario:start="11143" scenario:ends="66983,66942,"/>
+  <scenario:destionation scenario:start="347" scenario:ends="67177,693,"/>
+  <scenario:destionation scenario:start="467" scenario:ends="6135,67797,"/>
+  <scenario:destionation scenario:start="67788" scenario:ends="11399,693,"/>
+  <scenario:destionation scenario:start="67791" scenario:ends="8939,447,"/>
+  <scenario:destionation scenario:start="67793" scenario:ends="67481,6079,"/>
+  <scenario:destionation scenario:start="6135" scenario:ends="67000,67075,"/>
+  <scenario:destionation scenario:start="8905" scenario:ends="7303,67380,"/>
+  <scenario:destionation scenario:start="7799" scenario:ends="505,67085,"/>
+  <scenario:destionation scenario:start="67708" scenario:ends="67794,67388,"/>
+  <scenario:destionation scenario:start="7825" scenario:ends="67017,67201,"/>
+  <scenario:destionation scenario:start="11277" scenario:ends="4549,67283,"/>
+  <scenario:destionation scenario:start="67791" scenario:ends="67185,67033,"/>
+  <scenario:destionation scenario:start="543" scenario:ends="67316,66879,"/>
+  <scenario:destionation scenario:start="6079" scenario:ends="67320,67253,"/>
+  <scenario:destionation scenario:start="10927" scenario:ends="67821,67370,"/>
+  <scenario:destionation scenario:start="67628" scenario:ends="7451,8857,"/>
+  <scenario:destionation scenario:start="4715" scenario:ends="7001,67355,"/>
+  <scenario:destionation scenario:start="67798" scenario:ends="7155,67212,"/>
+  <scenario:destionation scenario:start="6941" scenario:ends="66978,4715,"/>
+  <scenario:destionation scenario:start="6871" scenario:ends="67176,66881,"/>
+  <scenario:destionation scenario:start="8965" scenario:ends="66993,67580,"/>
+  <scenario:destionation scenario:start="8499" scenario:ends="66877,11013,"/>
+  <scenario:destionation scenario:start="7577" scenario:ends="623,67000,"/>
+  <scenario:destionation scenario:start="7493" scenario:ends="11111,67201,"/>
+  <scenario:destionation scenario:start="6907" scenario:ends="66910,66980,"/>
+  <scenario:destionation scenario:start="505" scenario:ends="67199,67630,"/>
+  <scenario:destionation scenario:start="7965" scenario:ends="67397,67878,"/>
+  <scenario:destionation scenario:start="6907" scenario:ends="67080,66910,"/>
+  <scenario:destionation scenario:start="467" scenario:ends="66916,10453,"/>
+  <scenario:destionation scenario:start="67708" scenario:ends="4687,67578,"/>
+  <scenario:destionation scenario:start="7601" scenario:ends="67136,7187,"/>
+  <scenario:destionation scenario:start="7799" scenario:ends="67381,6789,"/>
+  <scenario:destionation scenario:start="581" scenario:ends="11803,7001,"/>
+  <scenario:destionation scenario:start="67706" scenario:ends="67368,66883,"/>
+  <scenario:destionation scenario:start="11065" scenario:ends="67177,67017,"/>
+  <scenario:destionation scenario:start="8951" scenario:ends="67125,67712,"/>
+  <scenario:destionation scenario:start="67798" scenario:ends="66892,66937,"/>
+  <scenario:destionation scenario:start="67714" scenario:ends="67180,67477,"/>
+  <scenario:destionation scenario:start="11237" scenario:ends="67414,67031,"/>
+  <scenario:destionation scenario:start="383" scenario:ends="5645,67398,"/>
+  <scenario:destionation scenario:start="7001" scenario:ends="67795,693,"/>
+  <scenario:destionation scenario:start="7949" scenario:ends="66891,8919,"/>
+  <scenario:destionation scenario:start="7187" scenario:ends="67793,11013,"/>
+  <scenario:destionation scenario:start="6941" scenario:ends="67205,67160,"/>
+  <scenario:destionation scenario:start="8965" scenario:ends="67494,66910,"/>
+  <scenario:destionation scenario:start="8905" scenario:ends="67324,67225,"/>
+  <scenario:destionation scenario:start="11143" scenario:ends="67015,67252,"/>
 </scenario:scenario>

@@ -565,6 +565,10 @@ public class ScenarioEditor extends JPanel {
         addTool(new RemovePoliceOfficeTool(this), menu, toolbar, menuGroup, toolbarGroup);
         addTool(new PlaceAmbulanceCentreTool(this), menu, toolbar, menuGroup, toolbarGroup);
         addTool(new RemoveAmbulanceCentreTool(this), menu, toolbar, menuGroup, toolbarGroup);
+        
+        menu.addSeparator();
+        toolbar.addSeparator();
+        addTool(new AssignDestinationTool(this), menu, toolbar, menuGroup, toolbarGroup);
     }
 
     private void createFunctionActions(JMenu menu, JToolBar toolbar) {
@@ -573,6 +577,7 @@ public class ScenarioEditor extends JPanel {
         addFunction(new ClearAgentsFunction(this), menu, toolbar);
         addFunction(new ClearAllFunction(this), menu, toolbar);
         addFunction(new PlaceAgentsFunction(this), menu, toolbar);
+        addFunction(new RandomiseDestination(this), menu, toolbar);
     }
 
     private void addTool(final Tool t, JMenu menu, JToolBar toolbar, ButtonGroup menuGroup, ButtonGroup toolbarGroup) {

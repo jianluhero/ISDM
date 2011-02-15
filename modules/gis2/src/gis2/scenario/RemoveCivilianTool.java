@@ -36,7 +36,7 @@ public class RemoveCivilianTool extends ShapeTool {
     protected void processClick(GMLShape shape) {
         editor.getScenario().removeCivilian(shape.getID());
         
-        //remove the corresponding destination as well
+        //remove the corresponding destination as well bing
         ArrayList<Destination>des=editor.getScenario().getDestination();
         for(int i=0;i<des.size();i++)
         {
