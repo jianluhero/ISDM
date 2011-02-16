@@ -17,6 +17,9 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.io.XMLWriter;
 import org.dom4j.io.OutputFormat;
+import org.omg.CORBA.PUBLIC_MEMBER;
+
+import rescuecore2.worldmodel.EntityID;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,14 +29,14 @@ import java.io.IOException;
    A class for generating random scenarios.
 */
 public class RandomScenarioGenerator {
-    private static final int DEFAULT_MIN_CIVS = 100;
-    private static final int DEFAULT_MAX_CIVS = 100;
+    private static final int DEFAULT_MIN_CIVS = 5;
+    private static final int DEFAULT_MAX_CIVS = 5;
     private static final int DEFAULT_MIN_PLATOONS = 0;
     private static final int DEFAULT_MAX_PLATOONS = 0;
     private static final int DEFAULT_MIN_CENTRES = 0;
     private static final int DEFAULT_MAX_CENTRES = 0;
-    private static final int DEFAULT_MIN_REFUGES = 2;
-    private static final int DEFAULT_MAX_REFUGES = 2;
+    private static final int DEFAULT_MIN_REFUGES = 0;
+    private static final int DEFAULT_MAX_REFUGES = 0;
     private static final int DEFAULT_MIN_FIRES = 0;
     private static final int DEFAULT_MAX_FIRES = 0;
 
@@ -337,5 +340,5 @@ public class RandomScenarioGenerator {
    		 	result.getDestination().add(d);
    		 	System.out.println("civilian "+id+" --------> "+"destinations "+des.get(0).intValue()+" "+des.get(1).intValue());
         }
-    }
+    }    
 }

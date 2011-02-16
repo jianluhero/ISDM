@@ -1,6 +1,7 @@
 <!-- This is a build file fragment that will be imported by the main build script -->
 <project>
   <property name="gis2.randomscenario.dir" value="../maps/gml/StMarys"/>
+	<property name="scenario.config" value="-c config/scenario.cfg"/>
 
   <target name="random-scenario" depends="jars" description="Generate a random scenario">
     <java classname="gis2.RandomScenarioGenerator" classpathref="path.common" fork="yes" dir="boot" maxmemory="1000m">

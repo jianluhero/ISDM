@@ -119,7 +119,12 @@ public class SampleCivilian extends AbstractSampleAgent<Civilian> {
         	else
         	{
         	//	Logger.info("civ: "+me.getID().getValue()+ " destionation "+me().getDestination());
-        		path=search.breadthFirstSearch(me().getPosition(), me().getDestinations());
+        		if(me().getDestinations().size()>0)
+        			path=search.breadthFirstSearch(me().getPosition(), me().getDestinations());
+        		else {
+        			runForRefuge=true;
+					path=search.breadthFirstSearch(me().getPosition(), refugeIDs);
+				}
         	}
         		
            /* if (path != null) {
