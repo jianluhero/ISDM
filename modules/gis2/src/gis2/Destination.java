@@ -11,6 +11,16 @@ public class Destination {
 	{
 		this.start=start;
 	}
+	
+	public Destination(Destination d)
+	{
+		this.start=d.start;
+		ends=new ArrayList<Integer>();
+		for(int i=0;i<d.getEnds().size();i++)
+		{
+			ends.add(d.getEnds().get(i).intValue());
+		}
+	}
 
 	public int getStart() {
 		return start;

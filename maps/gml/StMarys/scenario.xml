@@ -7,14 +7,13 @@
   <scenario:civilian scenario:location="9003"/>
   <scenario:civilian scenario:location="447"/>
   <scenario:civilian scenario:location="67787"/>
-  <scenario:civilian scenario:location="4887"/>
   <scenario:civilian scenario:location="67708"/>
-  <scenario:destionation scenario:start="6941" scenario:ends="483,"/>
-  <scenario:destionation scenario:start="67795" scenario:ends="987,"/>
-  <scenario:destionation scenario:start="11143" scenario:ends="67901,"/>
-  <scenario:destionation scenario:start="9003" scenario:ends="67201,"/>
-  <scenario:destionation scenario:start="447" scenario:ends="67538,"/>
-  <scenario:destionation scenario:start="67787" scenario:ends="67082,"/>
-  <scenario:destionation scenario:start="4887" scenario:ends="543,"/>
-  <scenario:destionation scenario:start="67708" scenario:ends="67515,"/>
+  <scenario:civilian scenario:location="4887"/>
+  <scenario:destionation scenario:start="6941" scenario:ends="67858,"/>
+  <scenario:destionation scenario:start="67795" scenario:ends="67858,"/>
+  <scenario:destionation scenario:start="11143" scenario:ends="67858,"/>
+  <scenario:destionation scenario:start="9003" scenario:ends="67858,"/>
+  <scenario:destionation scenario:start="447" scenario:ends="67858,"/>
+  <scenario:destionation scenario:start="67787" scenario:ends="67858,"/>
+  <scenario:destionation scenario:start="67708" scenario:ends="67858,"/>
 </scenario:scenario>

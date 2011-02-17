@@ -11,6 +11,8 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.undo.AbstractUndoableEdit;
+
 import rescuecore2.log.Logger;
 import rescuecore2.worldmodel.EntityID;
 
@@ -37,6 +39,9 @@ public class AssignDestinationTool extends ShapeTool {
 	private double maxY;
 
 	ArrayList<EntityID> selectedShapes;
+	ArrayList<ArrayList<Destination>> destinationHis;
+	private int index;
+	private boolean firstChange;
 
 	protected AssignDestinationTool(ScenarioEditor editor) {
 		super(editor);
@@ -44,6 +49,10 @@ public class AssignDestinationTool extends ShapeTool {
 		selected = new FilledShapeDecorator(SELECTED_COLOUR, SELECTED_COLOUR,
 				SELECTED_COLOUR);
 		selectedShapes = new ArrayList<EntityID>();
+
+		destinationHis = new ArrayList<ArrayList<Destination>>();
+		index = -1;
+		firstChange = true;
 	}
 
 	@Override
@@ -51,10 +60,48 @@ public class AssignDestinationTool extends ShapeTool {
 		return "Assign Destination for Civilians";
 	}
 
+	public void saveDestination() {
+		ArrayList<Destination> r = new ArrayList<Destination>();
+		if (editor.getScenario() == null)
+			Logger.debug("scenario is null, fail to save destination");
+		else {
+			ArrayList<Destination> d = editor.getScenario().getDestination();
+			for (int i = 0; i < d.size(); i++) {
+				Destination a = new Destination(d.get(i));
+				r.add(a);
+			}
+			index++;
+			destinationHis.add(index,r);
+			for(int i=index+1;i<destinationHis.size();i++)
+			{
+				destinationHis.remove(i);				
+			}
+		}		
+	}
+	
+	public void restoreDestination(int index) {
+		if (destinationHis.size() > index && index >= 0) {
+			ArrayList<Destination> d = destinationHis.get(index);
+			ArrayList<Destination> r = editor.getScenario().getDestination();
+			r.clear();
+			for (int i = 0; i < d.size(); i++) {
+				Destination a = new Destination(d.get(i));
+				r.add(a);
+			}
+		}
+	}
+
 	@Override
 	protected void processClick(GMLShape shape) {
+		if (firstChange) {
+			saveDestination();
+			firstChange = false;
+		}
+		
+		boolean changed = false;
 		ArrayList<Destination> destinations = editor.getScenario()
 				.getDestination();
+
 		for (int i = 0; i < selectedShapes.size(); i++) {
 			EntityID id = selectedShapes.get(i);
 			for (int j = 0; j < destinations.size(); j++) {
@@ -63,16 +110,23 @@ public class AssignDestinationTool extends ShapeTool {
 					ArrayList<Integer> ends = new ArrayList<Integer>();
 					ends.add(shape.getID());
 					destination.setEnds(ends);
+					changed = true;
+					Logger.debug("new destination from " +destination.getStart()+" to " + shape.getID());
 				}
 			}
 		}
+
+		if (changed) {
+			saveDestination();
+			editor.addEdit(new AssignDestinationEdit());
+		}
+
 		editor.setChanged();
 		editor.updateOverlays();
 		editor.getViewer().clearAllBuildingDecorators();
 		editor.getViewer().clearAllRoadDecorators();
 		editor.getViewer().clearAllSpaceDecorators();
 		selectedShapes.clear();
-		// editor.addEdit(new AssignDestinationEdit(shape.getID()));
 	}
 
 	@Override
@@ -100,6 +154,11 @@ public class AssignDestinationTool extends ShapeTool {
 	 * @return
 	 */
 	protected void selectedShapes() {
+		selectedShapes.clear();
+		editor.getViewer().clearAllBuildingDecorators();
+		editor.getViewer().clearAllRoadDecorators();
+		editor.getViewer().clearAllSpaceDecorators();
+
 		Logger.debug("select shapes: ");
 		Iterator<GMLShape> shapes = editor.getMap().getAllShapes().iterator();
 		while (shapes.hasNext()) {
@@ -142,59 +201,56 @@ public class AssignDestinationTool extends ShapeTool {
 			GMLShape shape = editor.getMap().findShapeUnder(c.getX(), c.getY());
 
 			if (selectedShapes.size() > 0) {
-				if (shape != null && isShapeinSelectedShapes(shape)) {
-					if (highlightShape == shape) {
-						return;
-					}
-					if (highlightShape != null) {
-						if (isShapeinSelectedShapes(highlightShape)) {
-							if (highlightShape instanceof GMLBuilding) {
-								editor.getViewer().setBuildingDecorator(
-										selected, (GMLBuilding) highlightShape);
-							}
-							if (highlightShape instanceof GMLRoad) {
-								editor.getViewer().setRoadDecorator(selected,
-										(GMLRoad) highlightShape);
-							}
-							if (highlightShape instanceof GMLSpace) {
-								editor.getViewer().setSpaceDecorator(selected,
-										(GMLSpace) highlightShape);
-							}
-						} else {
-							if (highlightShape instanceof GMLBuilding) {
-								editor.getViewer().clearBuildingDecorator(
-										(GMLBuilding) highlightShape);
-							}
-							if (highlightShape instanceof GMLRoad) {
-								editor.getViewer().clearRoadDecorator(
-										(GMLRoad) highlightShape);
-							}
-							if (highlightShape instanceof GMLSpace) {
-								editor.getViewer().clearSpaceDecorator(
-										(GMLSpace) highlightShape);
-							}
-						}
-					}
-					highlightShape = shape;
-					if (highlightShape != null) {
+				if (highlightShape == shape) {
+					return;
+				}
+				if (highlightShape != null) {
+					if (isShapeinSelectedShapes(highlightShape)) {
 						if (highlightShape instanceof GMLBuilding) {
-							editor.getViewer().setBuildingDecorator(highlight,
+							editor.getViewer().setBuildingDecorator(selected,
 									(GMLBuilding) highlightShape);
 						}
 						if (highlightShape instanceof GMLRoad) {
-							editor.getViewer().setRoadDecorator(highlight,
+							editor.getViewer().setRoadDecorator(selected,
 									(GMLRoad) highlightShape);
 						}
 						if (highlightShape instanceof GMLSpace) {
-							editor.getViewer().setSpaceDecorator(highlight,
+							editor.getViewer().setSpaceDecorator(selected,
+									(GMLSpace) highlightShape);
+						}
+					} else {
+						if (highlightShape instanceof GMLBuilding) {
+							editor.getViewer().clearBuildingDecorator(
+									(GMLBuilding) highlightShape);
+						}
+						if (highlightShape instanceof GMLRoad) {
+							editor.getViewer().clearRoadDecorator(
+									(GMLRoad) highlightShape);
+						}
+						if (highlightShape instanceof GMLSpace) {
+							editor.getViewer().clearSpaceDecorator(
 									(GMLSpace) highlightShape);
 						}
 					}
-					editor.getViewer().repaint();
-
-				} else {
-					highlight(shape);
 				}
+				highlightShape = shape;
+				if (highlightShape != null) {
+					if (highlightShape instanceof GMLBuilding) {
+						editor.getViewer().setBuildingDecorator(highlight,
+								(GMLBuilding) highlightShape);
+					}
+					if (highlightShape instanceof GMLRoad) {
+						editor.getViewer().setRoadDecorator(highlight,
+								(GMLRoad) highlightShape);
+					}
+					if (highlightShape instanceof GMLSpace) {
+						editor.getViewer().setSpaceDecorator(highlight,
+								(GMLSpace) highlightShape);
+					}
+				}
+
+				editor.getViewer().repaint();
+
 			} else {
 				highlight(shape);
 			}
@@ -270,22 +326,72 @@ public class AssignDestinationTool extends ShapeTool {
 		}
 	}
 
+	protected void highlight(GMLShape newShape) {
+		if (!shouldHighlight(newShape)) {
+			return;
+		}
+		if (highlightShape == newShape) {
+			return;
+		}
+		if (highlightShape != null) {
+			if (highlightShape instanceof GMLBuilding) {
+				editor.getViewer().clearBuildingDecorator(
+						(GMLBuilding) highlightShape);
+			}
+			if (highlightShape instanceof GMLRoad) {
+				editor.getViewer().clearRoadDecorator((GMLRoad) highlightShape);
+			}
+			if (highlightShape instanceof GMLSpace) {
+				editor.getViewer().clearSpaceDecorator(
+						(GMLSpace) highlightShape);
+			}
+		}
+		highlightShape = newShape;
+		if (highlightShape != null) {
+			if (highlightShape instanceof GMLBuilding) {
+				editor.getViewer().setBuildingDecorator(highlight,
+						(GMLBuilding) highlightShape);
+			}
+			if (highlightShape instanceof GMLRoad) {
+				editor.getViewer().setRoadDecorator(highlight,
+						(GMLRoad) highlightShape);
+			}
+			if (highlightShape instanceof GMLSpace) {
+				editor.getViewer().setSpaceDecorator(highlight,
+						(GMLSpace) highlightShape);
+			}
+		}
+		editor.getViewer().repaint();
+	}
+
 	@Override
 	protected boolean shouldHighlight(GMLShape shape) {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
-	/*
-	 * private class AssignDestinationEdit extends AbstractUndoableEdit {
-	 * private int id;
-	 * 
-	 * public AssignDestinationEdit(int id) { this.id = id; }
-	 * 
-	 * @Override public void undo() { super.undo();
-	 * editor.getScenario().removeCivilian(id); editor.updateOverlays(); }
-	 * 
-	 * @Override public void redo() { super.redo();
-	 * editor.getScenario().addCivilian(id); editor.updateOverlays(); } }
-	 */
+	private class AssignDestinationEdit extends AbstractUndoableEdit {
+
+		public AssignDestinationEdit() {
+			super();
+		}
+
+		@Override
+		public void undo() {
+			super.undo();
+			if (index > 0) {
+				index--;
+				restoreDestination(index);
+			}
+		}
+
+		@Override
+		public void redo() {
+			super.redo();
+			if (index + 1 < destinationHis.size()) {
+				index++;
+				restoreDestination(index);
+			}
+		}
+	}
 }
