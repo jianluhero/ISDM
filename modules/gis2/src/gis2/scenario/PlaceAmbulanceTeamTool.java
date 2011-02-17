@@ -28,6 +28,8 @@ public class PlaceAmbulanceTeamTool extends ShapeTool {
 
     @Override
     protected void processClick(GMLShape shape) {
+    	editor.setOperation(getName());
+    	
         editor.getScenario().addAmbulanceTeam(shape.getID());
         editor.setChanged();
         editor.updateOverlays();

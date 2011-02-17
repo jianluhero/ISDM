@@ -29,6 +29,7 @@ public class PlaceFireStationTool extends ShapeTool {
 
     @Override
     protected void processClick(GMLShape shape) {
+    	editor.setOperation(getName());
         editor.getScenario().addFireStation(shape.getID());
         editor.setChanged();
         editor.updateOverlays();

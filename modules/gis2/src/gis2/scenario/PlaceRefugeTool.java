@@ -29,6 +29,7 @@ public class PlaceRefugeTool extends ShapeTool {
 
     @Override
     protected void processClick(GMLShape shape) {
+    	editor.setOperation(getName());
         editor.getScenario().addRefuge(shape.getID());
         editor.setChanged();
         editor.updateOverlays();

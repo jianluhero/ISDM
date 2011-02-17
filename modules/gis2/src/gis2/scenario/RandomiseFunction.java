@@ -21,7 +21,7 @@ public class RandomiseFunction extends AbstractFunction {
 
     @Override
     public String getName() {
-        return "Randomise";
+        return "Randomise Scenario";
     }
 
     @Override
@@ -29,6 +29,7 @@ public class RandomiseFunction extends AbstractFunction {
         RandomScenarioGenerator generator = new RandomScenarioGenerator();
         Scenario s = generator.makeRandomScenario(editor.getMap(), random);
         try {
+        	editor.setOperation(getName());
             editor.setScenario(editor.getMap(), s);
             editor.setChanged();
             editor.updateOverlays();

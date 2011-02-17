@@ -28,6 +28,7 @@ public class RemoveFireBrigadeTool extends ShapeTool {
 
     @Override
     protected void processClick(GMLShape shape) {
+    	editor.setOperation(getName());
         editor.getScenario().removeFireBrigade(shape.getID());
         editor.setChanged();
         editor.updateOverlays();

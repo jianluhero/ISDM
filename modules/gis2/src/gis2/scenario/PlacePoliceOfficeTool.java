@@ -29,6 +29,7 @@ public class PlacePoliceOfficeTool extends ShapeTool {
 
     @Override
     protected void processClick(GMLShape shape) {
+    	editor.setOperation(getName());
         editor.getScenario().addPoliceOffice(shape.getID());
         editor.setChanged();
         editor.updateOverlays();

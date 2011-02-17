@@ -115,12 +115,11 @@ public class AssignDestinationTool extends ShapeTool {
 				}
 			}
 		}
-
 		if (changed) {
 			saveDestination();
 			editor.addEdit(new AssignDestinationEdit());
+			editor.setOperation(getName()+": assign a destination");
 		}
-
 		editor.setChanged();
 		editor.updateOverlays();
 		editor.getViewer().clearAllBuildingDecorators();
@@ -306,6 +305,8 @@ public class AssignDestinationTool extends ShapeTool {
 						+ " " + minY + " is selected");
 				selectedShapes();
 			}
+			editor.setOperation(getName()+": drag a list of shapes");
+			editor.updateOverlays();
 		}
 
 		@Override

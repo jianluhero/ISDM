@@ -34,6 +34,8 @@ public class PlaceCivilianTool extends ShapeTool {
 
     @Override
     protected void processClick(GMLShape shape) {
+    	editor.setOperation(getName());
+    	
         editor.getScenario().addCivilian(shape.getID());
         //set refuge as default destination bing
         ArrayList<Destination>des=editor.getScenario().getDestination();

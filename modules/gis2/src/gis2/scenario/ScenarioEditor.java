@@ -79,8 +79,9 @@ public class ScenarioEditor extends JPanel {
     private Scenario scenario;
     private Tool currentTool;
     private JLabel statusLabel;
-
-    private boolean changed;
+    
+    private String operation;
+	private boolean changed;
 
     private UndoManager undoManager;
     private Action undoAction;
@@ -686,7 +687,8 @@ public class ScenarioEditor extends JPanel {
                                         + scenario.getPoliceForces().size() + " pf, "
                                         + scenario.getPoliceOffices().size() + " po, "
                                         + scenario.getAmbulanceTeams().size() + " at, "
-                                        + scenario.getAmbulanceCentres().size() + " ac");
+                                        + scenario.getAmbulanceCentres().size() + " ac"
+                                        +"==== Operation: "+(operation==null?"":operation));                                 
                 }
             });
     }
@@ -716,4 +718,12 @@ public class ScenarioEditor extends JPanel {
 
     private void updateAgentOverlay() {
     }
+    
+    public String getOperation() {
+		return operation;
+	}
+
+	public void setOperation(String operation) {
+		this.operation = operation;
+	}
 }

@@ -28,6 +28,7 @@ public class RemovePoliceForceTool extends ShapeTool {
 
     @Override
     protected void processClick(GMLShape shape) {
+    	editor.setOperation(getName());
         editor.getScenario().removePoliceForce(shape.getID());
         editor.setChanged();
         editor.updateOverlays();

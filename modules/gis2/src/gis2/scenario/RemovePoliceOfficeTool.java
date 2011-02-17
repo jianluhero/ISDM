@@ -29,6 +29,7 @@ public class RemovePoliceOfficeTool extends ShapeTool {
 
     @Override
     protected void processClick(GMLShape shape) {
+    	editor.setOperation(getName());
         editor.getScenario().removePoliceOffice(shape.getID());
         editor.setChanged();
         editor.updateOverlays();

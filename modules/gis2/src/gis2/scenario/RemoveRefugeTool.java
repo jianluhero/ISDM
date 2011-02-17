@@ -29,6 +29,7 @@ public class RemoveRefugeTool extends ShapeTool {
 
     @Override
     protected void processClick(GMLShape shape) {
+    	editor.setOperation(getName());
         editor.getScenario().removeRefuge(shape.getID());
         editor.setChanged();
         editor.updateOverlays();

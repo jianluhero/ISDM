@@ -29,6 +29,7 @@ public class RemoveFireTool extends ShapeTool {
 
     @Override
     protected void processClick(GMLShape shape) {
+    	editor.setOperation(getName());
         editor.getScenario().removeFire(shape.getID());
         editor.setChanged();
         editor.updateOverlays();

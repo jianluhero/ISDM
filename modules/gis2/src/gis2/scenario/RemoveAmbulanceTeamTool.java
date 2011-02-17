@@ -28,6 +28,7 @@ public class RemoveAmbulanceTeamTool extends ShapeTool {
 
     @Override
     protected void processClick(GMLShape shape) {
+    	editor.setOperation(getName());
         editor.getScenario().removeAmbulanceTeam(shape.getID());
         editor.setChanged();
         editor.updateOverlays();

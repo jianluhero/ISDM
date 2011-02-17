@@ -28,6 +28,7 @@ public class PlaceFireBrigadeTool extends ShapeTool {
 
     @Override
     protected void processClick(GMLShape shape) {
+    	editor.setOperation(getName());
         editor.getScenario().addFireBrigade(shape.getID());
         editor.setChanged();
         editor.updateOverlays();

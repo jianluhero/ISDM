@@ -27,6 +27,7 @@ public class RandomiseDestination extends AbstractFunction {
 
 	@Override
 	public void execute() {
+		editor.setOperation(getName());
 		ArrayList<Destination>destinations=editor.getScenario().getDestination();
 		List<GMLShape> all = new ArrayList<GMLShape>(editor.getMap().getAllShapes());
 		Random random=new Random();
@@ -36,6 +37,7 @@ public class RandomiseDestination extends AbstractFunction {
 			d.getEnds().clear();			
 			int des=all.get(random.nextInt(all.size())).getID();
 			d.getEnds().add(des);
-		}	
+		}
+		editor.updateOverlays();
 	}
 }
