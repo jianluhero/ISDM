@@ -5,6 +5,7 @@ import gis2.RandomScenarioGenerator;
 import gis2.Scenario;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -28,16 +29,19 @@ public class RandomiseDestination extends AbstractFunction {
 	@Override
 	public void execute() {
 		editor.setOperation(getName());
+		Iterator<Integer>civs=editor.getScenario().getCivilians().iterator();
 		ArrayList<Destination>destinations=editor.getScenario().getDestination();
 		List<GMLShape> all = new ArrayList<GMLShape>(editor.getMap().getAllShapes());
 		Random random=new Random();
-		for(int i=0;i<destinations.size();i++)
+		destinations.clear();
+		while (civs.hasNext())
 		{
-			Destination d=destinations.get(i);
-			d.getEnds().clear();			
+			Destination d=new Destination(civs.next());			
 			int des=all.get(random.nextInt(all.size())).getID();
 			d.getEnds().add(des);
+			destinations.add(d);
 		}
-		editor.updateOverlays();
+		editor.setChanged();
+		editor.updateOverlays();	
 	}
 }

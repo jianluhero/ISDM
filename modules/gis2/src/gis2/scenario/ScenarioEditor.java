@@ -88,7 +88,7 @@ public class ScenarioEditor extends JPanel {
     private Action redoAction;
 
     private File baseDir;
-    private File saveFile;
+   	private File saveFile;
 
     private FilledShapeDecorator fireDecorator = new FilledShapeDecorator(FIRE_COLOUR, null, null);
     private FilledShapeDecorator fireStationDecorator = new FilledShapeDecorator(FIRE_STATION_COLOUR, null, null);
@@ -579,6 +579,8 @@ public class ScenarioEditor extends JPanel {
         addFunction(new ClearAllFunction(this), menu, toolbar);
         addFunction(new PlaceAgentsFunction(this), menu, toolbar);
         addFunction(new RandomiseDestination(this), menu, toolbar);
+        
+        addFunction(new AssignCivilianFromLocationDistribution(this), menu, toolbar);
     }
 
     private void addTool(final Tool t, JMenu menu, JToolBar toolbar, ButtonGroup menuGroup, ButtonGroup toolbarGroup) {
@@ -726,4 +728,12 @@ public class ScenarioEditor extends JPanel {
 	public void setOperation(String operation) {
 		this.operation = operation;
 	}
+	
+	 public File getBaseDir() {
+			return baseDir;
+		}
+
+		public void setBaseDir(File baseDir) {
+			this.baseDir = baseDir;
+		}
 }

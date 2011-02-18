@@ -10,6 +10,7 @@ public class Destination {
 	public Destination(int start)
 	{
 		this.start=start;
+		ends=new ArrayList<Integer>();
 	}
 	
 	public Destination(Destination d)
