@@ -6,12 +6,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Insets;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import rescuecore2.log.Logger;
-import rescuecore2.worldmodel.EntityID;
 
 import maps.gml.view.FilledShapeDecorator;
 import maps.gml.GMLRoad;

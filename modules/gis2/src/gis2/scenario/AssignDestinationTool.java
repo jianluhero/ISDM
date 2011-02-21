@@ -196,6 +196,8 @@ public class AssignDestinationTool extends ShapeTool {
 			Point p = fixEventPoint(e.getPoint());
 			GMLCoordinates c = editor.getViewer().getCoordinatesAtPoint(p.x,
 					p.y);
+			Logger.debug(c.getX()+"-------"+c.getY());
+			Logger.debug(editor.getViewer().getScreenCoordinates(c).x+"======"+editor.getViewer().getScreenCoordinates(c).y);
 
 			GMLShape shape = editor.getMap().findShapeUnder(c.getX(), c.getY());
 

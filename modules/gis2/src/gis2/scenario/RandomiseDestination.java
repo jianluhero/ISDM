@@ -23,7 +23,7 @@ public class RandomiseDestination extends AbstractFunction {
 
 	@Override
 	public String getName() {
-		return "Randomise Destination for Civilians";
+		return "Randomise Des. for Civ.";
 	}
 
 	@Override

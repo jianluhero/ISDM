@@ -55,685 +55,782 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
 /**
-   A component for editing scenarios.
-*/
+ * A component for editing scenarios.
+ */
 public class ScenarioEditor extends JPanel {
-    private static final int VIEWER_PREFERRED_SIZE = 500;
-    private static final int INSPECTOR_PREFERRED_WIDTH = 300;
-    private static final int INSPECTOR_PREFERRED_HEIGHT = 500;
+	private static final int VIEWER_PREFERRED_SIZE = 500;
+	private static final int INSPECTOR_PREFERRED_WIDTH = 300;
+	private static final int INSPECTOR_PREFERRED_HEIGHT = 500;
 
-    private static final NumberFormat FORMAT = new DecimalFormat("#0.000");
+	private static final NumberFormat FORMAT = new DecimalFormat("#0.000");
 
-    private static final Color FIRE_COLOUR = new Color(255, 0, 0, 128);
-    private static final Color FIRE_STATION_COLOUR = new Color(255, 255, 0);
-    private static final Color POLICE_OFFICE_COLOUR = new Color(0, 0, 255);
-    private static final Color AMBULANCE_CENTRE_COLOUR = new Color(255, 255, 255);
-    private static final Color REFUGE_COLOUR = new Color(0, 128, 0);
+	private static final Color FIRE_COLOUR = new Color(255, 0, 0, 128);
+	private static final Color FIRE_STATION_COLOUR = new Color(255, 255, 0);
+	private static final Color POLICE_OFFICE_COLOUR = new Color(0, 0, 255);
+	private static final Color AMBULANCE_CENTRE_COLOUR = new Color(255, 255,
+			255);
+	private static final Color REFUGE_COLOUR = new Color(0, 128, 0);
 
-    private GMLMap map;
-    private GMLMapViewer viewer;
-    private GMLObjectInspector inspector;
-    private DecoratorOverlay fireOverlay;
-    private DecoratorOverlay centreOverlay;
-    private AgentOverlay agentOverlay;
-    private Scenario scenario;
-    private Tool currentTool;
-    private JLabel statusLabel;
-    
-    private String operation;
+	private GMLMap map;
+	private GMLMapViewer viewer;
+	private GMLObjectInspector inspector;
+	private DecoratorOverlay fireOverlay;
+	private DecoratorOverlay centreOverlay;
+	private AgentOverlay agentOverlay;
+
+	private Scenario scenario;
+	private Tool currentTool;
+	private JLabel statusLabel;
+
+	private String operation;
 	private boolean changed;
 
-    private UndoManager undoManager;
-    private Action undoAction;
-    private Action redoAction;
+	private UndoManager undoManager;
+	private Action undoAction;
+	private Action redoAction;
 
-    private File baseDir;
-   	private File saveFile;
+	private File baseDir;
+	private File saveFile;
 
-    private FilledShapeDecorator fireDecorator = new FilledShapeDecorator(FIRE_COLOUR, null, null);
-    private FilledShapeDecorator fireStationDecorator = new FilledShapeDecorator(FIRE_STATION_COLOUR, null, null);
-    private FilledShapeDecorator policeOfficeDecorator = new FilledShapeDecorator(POLICE_OFFICE_COLOUR, null, null);
-    private FilledShapeDecorator ambulanceCentreDecorator = new FilledShapeDecorator(AMBULANCE_CENTRE_COLOUR, null, null);
-    private FilledShapeDecorator refugeDecorator = new FilledShapeDecorator(REFUGE_COLOUR, null, null);
+	private FilledShapeDecorator fireDecorator = new FilledShapeDecorator(
+			FIRE_COLOUR, null, null);
+	private FilledShapeDecorator fireStationDecorator = new FilledShapeDecorator(
+			FIRE_STATION_COLOUR, null, null);
+	private FilledShapeDecorator policeOfficeDecorator = new FilledShapeDecorator(
+			POLICE_OFFICE_COLOUR, null, null);
+	private FilledShapeDecorator ambulanceCentreDecorator = new FilledShapeDecorator(
+			AMBULANCE_CENTRE_COLOUR, null, null);
+	private FilledShapeDecorator refugeDecorator = new FilledShapeDecorator(
+			REFUGE_COLOUR, null, null);
 
-    /**
-       Construct a new ScenarioEditor.
-       @param menuBar The menu bar to add menus to.
-    */
-    public ScenarioEditor(JMenuBar menuBar) {
-        this(menuBar, null, null);
-    }
+	/**
+	 * Construct a new ScenarioEditor.
+	 * 
+	 * @param menuBar
+	 *            The menu bar to add menus to.
+	 */
+	public ScenarioEditor(JMenuBar menuBar) {
+		this(menuBar, null, null);
+	}
 
-    /**
-       Construct a new ScenarioEditor.
-       @param menuBar The menu bar to add menus to.
-       @param map The GMLMap to view.
-       @param scenario The scenario to edit.
-    */
-    public ScenarioEditor(JMenuBar menuBar, GMLMap map, Scenario scenario) {
-        super(new BorderLayout());
-        this.map = map;
-        this.scenario = scenario;
-        viewer = new GMLMapViewer(map);
-        statusLabel = new JLabel("Status");
-        fireOverlay = new DecoratorOverlay();
-        centreOverlay = new DecoratorOverlay();
-        agentOverlay = new AgentOverlay(this);
-        viewer.addOverlay(fireOverlay);
-        viewer.addOverlay(centreOverlay);
-        viewer.addOverlay(agentOverlay);
-        inspector = new GMLObjectInspector(map);
-        undoManager = new UndoManager();
-        viewer.setPreferredSize(new Dimension(VIEWER_PREFERRED_SIZE, VIEWER_PREFERRED_SIZE));
-        inspector.setPreferredSize(new Dimension(INSPECTOR_PREFERRED_WIDTH, INSPECTOR_PREFERRED_HEIGHT));
-        viewer.setBackground(Color.darkGray);
-        //viewer.setBackground(Color.GRAY);
-        viewer.getPanZoomListener().setPanOnRightMouse();
-        changed = false;
-        JToolBar fileToolbar = new JToolBar("File");
-        JToolBar editToolbar = new JToolBar("Edit");
-        JToolBar toolsToolbar = new JToolBar("Tools");
-        JToolBar functionsToolbar = new JToolBar("Functions");
-        JMenu fileMenu = new JMenu("File", false);
-        JMenu editMenu = new JMenu("Edit", false);
-        JMenu toolsMenu = new JMenu("Tools", false);
-        JMenu functionsMenu = new JMenu("Functions", false);
+	/**
+	 * Construct a new ScenarioEditor.
+	 * 
+	 * @param menuBar
+	 *            The menu bar to add menus to.
+	 * @param map
+	 *            The GMLMap to view.
+	 * @param scenario
+	 *            The scenario to edit.
+	 */
+	public ScenarioEditor(JMenuBar menuBar, GMLMap map, Scenario scenario) {
+		super(new BorderLayout());
+		this.map = map;
+		this.scenario = scenario;
+		viewer = new GMLMapViewer(map);
+		statusLabel = new JLabel("Status");
+		fireOverlay = new DecoratorOverlay();
+		centreOverlay = new DecoratorOverlay();
+		agentOverlay = new AgentOverlay(this);
+		viewer.addOverlay(fireOverlay);
+		viewer.addOverlay(centreOverlay);
+		viewer.addOverlay(agentOverlay);
+		inspector = new GMLObjectInspector(map);
+		undoManager = new UndoManager();
+		viewer.setPreferredSize(new Dimension(VIEWER_PREFERRED_SIZE,
+				VIEWER_PREFERRED_SIZE));
+		inspector.setPreferredSize(new Dimension(INSPECTOR_PREFERRED_WIDTH,
+				INSPECTOR_PREFERRED_HEIGHT));
+		viewer.setBackground(Color.darkGray);
+		// viewer.setBackground(Color.GRAY);
+		viewer.getPanZoomListener().setPanOnRightMouse();
+		changed = false;
+		JToolBar fileToolbar = new JToolBar("File");
+		JToolBar editToolbar = new JToolBar("Edit");
+		JToolBar toolsToolbar = new JToolBar("Tools");
+		JToolBar functionsToolbar = new JToolBar("Functions");
+		JMenu fileMenu = new JMenu("File", false);
+		JMenu editMenu = new JMenu("Edit", false);
+		JMenu toolsMenu = new JMenu("Tools", false);
+		JMenu functionsMenu = new JMenu("Functions", false);
 
-        createFileActions(fileMenu, fileToolbar);
-        createEditActions(editMenu, editToolbar);
-        createToolActions(toolsMenu, toolsToolbar);
-        createFunctionActions(functionsMenu, functionsToolbar);
+		createFileActions(fileMenu, fileToolbar);
+		createEditActions(editMenu, editToolbar);
+		createToolActions(toolsMenu, toolsToolbar);
+		createFunctionActions(functionsMenu, functionsToolbar);
 
-        JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, viewer, inspector);
-        add(split, BorderLayout.CENTER);
-        JPanel toolbars = new JPanel(new GridLayout(0, 1));
-        toolbars.add(fileToolbar);
-        toolbars.add(editToolbar);
-        toolbars.add(toolsToolbar);
-        toolbars.add(functionsToolbar);
-        add(toolbars, BorderLayout.NORTH);
-        add(statusLabel, BorderLayout.SOUTH);
-        menuBar.add(fileMenu);
-        menuBar.add(editMenu);
-        menuBar.add(toolsMenu);
-        menuBar.add(functionsMenu);
+		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, viewer,
+				inspector);
+		add(split, BorderLayout.CENTER);
+		JPanel toolbars = new JPanel(new GridLayout(0, 1));
+		toolbars.add(fileToolbar);
+		toolbars.add(editToolbar);
+		toolbars.add(toolsToolbar);
+		toolbars.add(functionsToolbar);
+		add(toolbars, BorderLayout.NORTH);
+		add(statusLabel, BorderLayout.SOUTH);
+		menuBar.add(fileMenu);
+		menuBar.add(editMenu);
+		menuBar.add(toolsMenu);
+		menuBar.add(functionsMenu);
 
-        baseDir = new File(System.getProperty("user.dir"));
-        saveFile = null;
-    }
+		baseDir = new File(System.getProperty("user.dir"));
+		saveFile = null;
+	}
 
-    /**
-       Entry point.
-       @param args Command line arguments.
-    */
-    public static void main(String[] args) {
-        final JFrame frame = new JFrame("Scenario Editor");
-        JMenuBar menuBar = new JMenuBar();
-        final ScenarioEditor editor = new ScenarioEditor(menuBar);
-        if (args.length > 0 && args[0].length() > 0) {
-            try {
-                editor.load(args[0]);
-            }
-            catch (CancelledByUserException e) {
-                return;
-            }
-            catch (MapException e) {
-                e.printStackTrace();
-            }
-            catch (ScenarioException e) {
-                e.printStackTrace();
-            }
-        }
+	/**
+	 * Entry point.
+	 * 
+	 * @param args
+	 *            Command line arguments.
+	 */
+	public static void main(String[] args) {
+		final JFrame frame = new JFrame("Scenario Editor");
+		JMenuBar menuBar = new JMenuBar();
+		final ScenarioEditor editor = new ScenarioEditor(menuBar);
+		if (args.length > 0 && args[0].length() > 0) {
+			try {
+				editor.load(args[0]);
+			} catch (CancelledByUserException e) {
+				return;
+			} catch (MapException e) {
+				e.printStackTrace();
+			} catch (ScenarioException e) {
+				e.printStackTrace();
+			}
+		}
 
-        frame.setJMenuBar(menuBar);
-        frame.setContentPane(editor);
-        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        frame.pack();
-        frame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    try {
-                        editor.close();
-                        frame.setVisible(false);
-                        frame.dispose();
-                        System.exit(0);
-                    }
-                    catch (CancelledByUserException ex) {
-                        frame.setVisible(true);
-                    }
-                }
-            });
-        frame.setVisible(true);
-    }
+		frame.setJMenuBar(menuBar);
+		frame.setContentPane(editor);
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		frame.pack();
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				try {
+					editor.close();
+					frame.setVisible(false);
+					frame.dispose();
+					System.exit(0);
+				} catch (CancelledByUserException ex) {
+					frame.setVisible(true);
+				}
+			}
+		});
+		frame.setVisible(true);
+	}
 
-    /**
-       Load a map and scenario by showing a file chooser dialog.
-       @throws CancelledByUserException If the user cancels the change due to unsaved changes.
-       @throws MapException If there is a problem reading the map.
-       @throws ScenarioException If there is a problem reading the scenario.
-    */
-    public void load() throws CancelledByUserException, MapException, ScenarioException {
-        JFileChooser chooser = new JFileChooser(baseDir);
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.setFileFilter(new FileFilter() {
-                @Override
-                public boolean accept(File f) {
-                    return f.isDirectory();
-                }
+	/**
+	 * Load a map and scenario by showing a file chooser dialog.
+	 * 
+	 * @throws CancelledByUserException
+	 *             If the user cancels the change due to unsaved changes.
+	 * @throws MapException
+	 *             If there is a problem reading the map.
+	 * @throws ScenarioException
+	 *             If there is a problem reading the scenario.
+	 */
+	public void load() throws CancelledByUserException, MapException,
+			ScenarioException {
+		JFileChooser chooser = new JFileChooser(baseDir);
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		chooser.setFileFilter(new FileFilter() {
+			@Override
+			public boolean accept(File f) {
+				return f.isDirectory();
+			}
 
-                @Override
-                public String getDescription() {
-                    return "Directories";
-                }
-            });
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            load(chooser.getSelectedFile());
-        }
-    }
+			@Override
+			public String getDescription() {
+				return "Directories";
+			}
+		});
+		if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			load(chooser.getSelectedFile());
+		}
+	}
 
-    /**
-       Load a map and scenario from a directory.
-       @param filename The name of the file to read.
-       @throws CancelledByUserException If the user cancels the change due to unsaved changes.
-       @throws MapException If there is a problem reading the map.
-       @throws ScenarioException If there is a problem reading the scenario.
-    */
-    public void load(String filename) throws CancelledByUserException, MapException, ScenarioException {
-        load(new File(filename));
-    }
+	/**
+	 * Load a map and scenario from a directory.
+	 * 
+	 * @param filename
+	 *            The name of the file to read.
+	 * @throws CancelledByUserException
+	 *             If the user cancels the change due to unsaved changes.
+	 * @throws MapException
+	 *             If there is a problem reading the map.
+	 * @throws ScenarioException
+	 *             If there is a problem reading the scenario.
+	 */
+	public void load(String filename) throws CancelledByUserException,
+			MapException, ScenarioException {
+		load(new File(filename));
+	}
 
-    /**
-       Load a map and scenario from a directory.
-       @param dir The directory to read.
-       @throws CancelledByUserException If the user cancels the change due to unsaved changes.
-       @throws MapException If there is a problem reading the map.
-       @throws ScenarioException If there is a problem reading the scenario.
-    */
-    public void load(File dir) throws CancelledByUserException, MapException, ScenarioException {
-        FileReader r = null;
-        try {
-            GMLMap newMap = (GMLMap)MapReader.readMap(new File(dir, "map.gml"));
-            File f = new File(dir, "scenario.xml");
-            SAXReader saxReader = new SAXReader();
-            r = new FileReader(f);
-            Document doc = saxReader.read(r);
-            Scenario newScenario = new Scenario(doc);
-            setScenario(newMap, newScenario);
-            baseDir = dir;
-            saveFile = f;
-        }
-        catch (IOException e) {
-            throw new ScenarioException(e);
-        }
-        catch (DocumentException e) {
-            throw new ScenarioException(e);
-        }
-        finally {
-            if (r != null) {
-                try {
-                    r.close();
-                }
-                catch (IOException e) {
-                    throw new ScenarioException(e);
-                }
-            }
-        }
-    }
+	/**
+	 * Load a map and scenario from a directory.
+	 * 
+	 * @param dir
+	 *            The directory to read.
+	 * @throws CancelledByUserException
+	 *             If the user cancels the change due to unsaved changes.
+	 * @throws MapException
+	 *             If there is a problem reading the map.
+	 * @throws ScenarioException
+	 *             If there is a problem reading the scenario.
+	 */
+	public void load(File dir) throws CancelledByUserException, MapException,
+			ScenarioException {
+		FileReader r = null;
+		try {
+			GMLMap newMap = (GMLMap) MapReader
+					.readMap(new File(dir, "map.gml"));
+			File f = new File(dir, "scenario.xml");
+			SAXReader saxReader = new SAXReader();
+			r = new FileReader(f);
+			Document doc = saxReader.read(r);
+			Scenario newScenario = new Scenario(doc);
+			setScenario(newMap, newScenario);
+			baseDir = dir;
+			saveFile = f;
+		} catch (IOException e) {
+			throw new ScenarioException(e);
+		} catch (DocumentException e) {
+			throw new ScenarioException(e);
+		} finally {
+			if (r != null) {
+				try {
+					r.close();
+				} catch (IOException e) {
+					throw new ScenarioException(e);
+				}
+			}
+		}
+	}
 
-    /**
-       Set the map and scenario.
-       @param newMap The new map.
-       @param newScenario The new scenario.
-       @throws CancelledByUserException If the user cancels the change due to unsaved changes.
-    */
-    public void setScenario(GMLMap newMap, Scenario newScenario) throws CancelledByUserException {
-        checkForChanges();
-        if (!checkScenario(newMap, newScenario)) {
-            JOptionPane.showMessageDialog(null, "The scenario file contained errors.");
-            return;
-        }
-        map = newMap;
-        scenario = newScenario;
-        changed = false;
-        viewer.setMap(map);
-        inspector.setMap(map);
-        updateOverlays();
-    }
+	/**
+	 * Set the map and scenario.
+	 * 
+	 * @param newMap
+	 *            The new map.
+	 * @param newScenario
+	 *            The new scenario.
+	 * @throws CancelledByUserException
+	 *             If the user cancels the change due to unsaved changes.
+	 */
+	public void setScenario(GMLMap newMap, Scenario newScenario)
+			throws CancelledByUserException {
+		checkForChanges();
+		if (!checkScenario(newMap, newScenario)) {
+			JOptionPane.showMessageDialog(null,
+					"The scenario file contained errors.");
+			return;
+		}
+		map = newMap;
+		scenario = newScenario;
+		changed = false;
+		viewer.setMap(map);
+		inspector.setMap(map);
+		updateOverlays();
+	}
 
-    /**
-       Get the map.
-       @return The map.
-    */
-    public GMLMap getMap() {
-        return map;
-    }
+	/**
+	 * Get the map.
+	 * 
+	 * @return The map.
+	 */
+	public GMLMap getMap() {
+		return map;
+	}
 
-    /**
-       Get the scenario.
-       @return The scenario.
-    */
-    public Scenario getScenario() {
-        return scenario;
-    }
+	/**
+	 * Get the scenario.
+	 * 
+	 * @return The scenario.
+	 */
+	public Scenario getScenario() {
+		return scenario;
+	}
 
-    /**
-       Save the scenario.
-       @throws ScenarioException If there is a problem saving the scenario.
-    */
-    public void save() throws ScenarioException {
-        if (saveFile == null) {
-            saveAs();
-        }
-        if (saveFile != null) {
-            Logger.debug("Saving to " + saveFile.getAbsolutePath());
-            Document doc = DocumentHelper.createDocument();
-            scenario.write(doc);
-            try {
-                if (!saveFile.exists()) {
-                    File parent = saveFile.getParentFile();
-                    if (!parent.exists()) {
-                        if (!saveFile.getParentFile().mkdirs()) {
-                            throw new ScenarioException("Couldn't create file " + saveFile.getPath());
-                        }
-                    }
-                    if (!saveFile.createNewFile()) {
-                        throw new ScenarioException("Couldn't create file " + saveFile.getPath());
-                    }
-                }
-                XMLWriter writer = new XMLWriter(new FileOutputStream(saveFile), OutputFormat.createPrettyPrint());
-                writer.write(doc);
-                writer.flush();
-                writer.close();
-            }
-            catch (IOException e) {
-                throw new ScenarioException(e);
-            }
-            baseDir = saveFile.getParentFile();
-            changed = false;
-        }
-    }
+	/**
+	 * Save the scenario.
+	 * 
+	 * @throws ScenarioException
+	 *             If there is a problem saving the scenario.
+	 */
+	public void save() throws ScenarioException {
+		if (saveFile == null) {
+			saveAs();
+		}
+		if (saveFile != null) {
+			Logger.debug("Saving to " + saveFile.getAbsolutePath());
+			Document doc = DocumentHelper.createDocument();
+			scenario.write(doc);
+			try {
+				if (!saveFile.exists()) {
+					File parent = saveFile.getParentFile();
+					if (!parent.exists()) {
+						if (!saveFile.getParentFile().mkdirs()) {
+							throw new ScenarioException("Couldn't create file "
+									+ saveFile.getPath());
+						}
+					}
+					if (!saveFile.createNewFile()) {
+						throw new ScenarioException("Couldn't create file "
+								+ saveFile.getPath());
+					}
+				}
+				XMLWriter writer = new XMLWriter(
+						new FileOutputStream(saveFile),
+						OutputFormat.createPrettyPrint());
+				writer.write(doc);
+				writer.flush();
+				writer.close();
+			} catch (IOException e) {
+				throw new ScenarioException(e);
+			}
+			baseDir = saveFile.getParentFile();
+			changed = false;
+		}
+	}
 
-    /**
-       Save the scenario.
-       @throws ScenarioException If there is a problem saving the scenario.
-    */
-    public void saveAs() throws ScenarioException {
-        JFileChooser chooser = new JFileChooser(baseDir);
-        if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            saveFile = chooser.getSelectedFile();
-            save();
-        }
-    }
+	/**
+	 * Save the scenario.
+	 * 
+	 * @throws ScenarioException
+	 *             If there is a problem saving the scenario.
+	 */
+	public void saveAs() throws ScenarioException {
+		JFileChooser chooser = new JFileChooser(baseDir);
+		if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+			saveFile = chooser.getSelectedFile();
+			save();
+		}
+	}
 
-    /**
-       Close the editor.
-       @throws CancelledByUserException If the user cancels the close due to unsaved changes."
-    */
-    public void close() throws CancelledByUserException {
-        checkForChanges();
-    }
+	/**
+	 * Close the editor.
+	 * 
+	 * @throws CancelledByUserException
+	 *             If the user cancels the close due to unsaved changes."
+	 */
+	public void close() throws CancelledByUserException {
+		checkForChanges();
+	}
 
-    /**
-       Get the map viewer.
-       @return The map viewer.
-    */
-    public GMLMapViewer getViewer() {
-        return viewer;
-    }
+	/**
+	 * Get the map viewer.
+	 * 
+	 * @return The map viewer.
+	 */
+	public GMLMapViewer getViewer() {
+		return viewer;
+	}
 
-    /**
-       Get the object inspector.
-       @return The object inspector.
-    */
-    public GMLObjectInspector getInspector() {
-        return inspector;
-    }
+	/**
+	 * Get the object inspector.
+	 * 
+	 * @return The object inspector.
+	 */
+	public GMLObjectInspector getInspector() {
+		return inspector;
+	}
 
-    /**
-       Register a change to the map.
-    */
-    public void setChanged() {
-        changed = true;
-    }
+	/**
+	 * Register a change to the map.
+	 */
+	public void setChanged() {
+		changed = true;
+	}
 
-    /**
-       Register an undoable edit.
-       @param edit The edit to add.
-    */
-    public void addEdit(UndoableEdit edit) {
-        undoManager.addEdit(edit);
-        undoAction.setEnabled(undoManager.canUndo());
-        redoAction.setEnabled(undoManager.canRedo());
-    }
+	/**
+	 * Register an undoable edit.
+	 * 
+	 * @param edit
+	 *            The edit to add.
+	 */
+	public void addEdit(UndoableEdit edit) {
+		undoManager.addEdit(edit);
+		undoAction.setEnabled(undoManager.canUndo());
+		redoAction.setEnabled(undoManager.canRedo());
+	}
 
-    /**
-       Update the overlay views.
-    */
-    public void updateOverlays() {
-        updateFireOverlay();
-        updateCentreOverlay();
-        updateAgentOverlay();
-        updateStatusLabel();
-        viewer.repaint();
-    }
+	/**
+	 * Update the overlay views.
+	 */
+	public void updateOverlays() {
+		updateFireOverlay();
+		updateCentreOverlay();
+		updateAgentOverlay();
+		updateStatusLabel();
+		viewer.repaint();
+	}
 
-    private void checkForChanges() throws CancelledByUserException {
-        if (changed) {
-            switch (JOptionPane.showConfirmDialog(null, "The current scenario has changes. Do you want to save them?")) {
-            case JOptionPane.YES_OPTION:
-                try {
-                    save();
-                }
-                catch (ScenarioException e) {
-                    JOptionPane.showMessageDialog(null, e);
-                    throw new CancelledByUserException();
-                }
-                break;
-            case JOptionPane.NO_OPTION:
-                changed = false;
-                return;
-            case JOptionPane.CANCEL_OPTION:
-                throw new CancelledByUserException();
-            default:
-                throw new RuntimeException("JOptionPane.showConfirmDialog returned something weird");
-            }
-        }
-    }
+	private void checkForChanges() throws CancelledByUserException {
+		if (changed) {
+			switch (JOptionPane
+					.showConfirmDialog(null,
+							"The current scenario has changes. Do you want to save them?")) {
+			case JOptionPane.YES_OPTION:
+				try {
+					save();
+				} catch (ScenarioException e) {
+					JOptionPane.showMessageDialog(null, e);
+					throw new CancelledByUserException();
+				}
+				break;
+			case JOptionPane.NO_OPTION:
+				changed = false;
+				return;
+			case JOptionPane.CANCEL_OPTION:
+				throw new CancelledByUserException();
+			default:
+				throw new RuntimeException(
+						"JOptionPane.showConfirmDialog returned something weird");
+			}
+		}
+	}
 
-    private void createFileActions(JMenu menu, JToolBar toolbar) {
-        Action newAction = new AbstractAction("New") {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        checkForChanges();
-                        setScenario(map, new Scenario());
-                    }
-                    catch (CancelledByUserException ex) {
-                        return;
-                    }
-                }
-            };
-        Action loadAction = new AbstractAction("Load") {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        checkForChanges();
-                        load();
-                    }
-                    catch (CancelledByUserException ex) {
-                        return;
-                    }
-                    catch (MapException ex) {
-                        JOptionPane.showMessageDialog(null, ex);
-                    }
-                    catch (ScenarioException ex) {
-                        JOptionPane.showMessageDialog(null, ex);
-                    }
-                }
-            };
-        Action saveAction = new AbstractAction("Save") {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        save();
-                    }
-                    catch (ScenarioException ex) {
-                        JOptionPane.showMessageDialog(null, ex);
-                    }
-                }
-            };
-        Action saveAsAction = new AbstractAction("Save as") {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        saveAs();
-                    }
-                    catch (ScenarioException ex) {
-                        JOptionPane.showMessageDialog(null, ex);
-                    }
-                }
-            };
-        toolbar.add(newAction);
-        toolbar.add(loadAction);
-        toolbar.add(saveAction);
-        toolbar.add(saveAsAction);
-        menu.add(newAction);
-        menu.add(loadAction);
-        menu.add(saveAction);
-        menu.add(saveAsAction);
-    }
+	private void createFileActions(JMenu menu, JToolBar toolbar) {
+		Action newAction = new AbstractAction("New") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					checkForChanges();
+					setScenario(map, new Scenario());
+				} catch (CancelledByUserException ex) {
+					return;
+				}
+			}
+		};
+		Action loadAction = new AbstractAction("Load") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					checkForChanges();
+					load();
+				} catch (CancelledByUserException ex) {
+					return;
+				} catch (MapException ex) {
+					JOptionPane.showMessageDialog(null, ex);
+				} catch (ScenarioException ex) {
+					JOptionPane.showMessageDialog(null, ex);
+				}
+			}
+		};
+		Action saveAction = new AbstractAction("Save") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					save();
+				} catch (ScenarioException ex) {
+					JOptionPane.showMessageDialog(null, ex);
+				}
+			}
+		};
+		Action saveAsAction = new AbstractAction("Save as") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					saveAs();
+				} catch (ScenarioException ex) {
+					JOptionPane.showMessageDialog(null, ex);
+				}
+			}
+		};
+		toolbar.add(newAction);
+		toolbar.add(loadAction);
+		toolbar.add(saveAction);
+		toolbar.add(saveAsAction);
+		menu.add(newAction);
+		menu.add(loadAction);
+		menu.add(saveAction);
+		menu.add(saveAsAction);
+	}
 
-    private void createEditActions(JMenu menu, JToolBar toolbar) {
-        undoAction = new AbstractAction("Undo") {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        undoManager.undo();
-                    }
-                    catch (CannotUndoException ex) {
-                        JOptionPane.showMessageDialog(null, ex);
-                    }
-                    setEnabled(undoManager.canUndo());
-                    redoAction.setEnabled(undoManager.canRedo());
-                }
-            };
-        redoAction = new AbstractAction("Redo") {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        undoManager.redo();
-                    }
-                    catch (CannotUndoException ex) {
-                        JOptionPane.showMessageDialog(null, ex);
-                    }
-                    setEnabled(undoManager.canRedo());
-                    undoAction.setEnabled(undoManager.canUndo());
-                }
-            };
-        undoAction.setEnabled(false);
-        redoAction.setEnabled(false);
-        toolbar.add(undoAction);
-        toolbar.add(redoAction);
-        menu.add(undoAction);
-        menu.add(redoAction);
-    }
+	private void createEditActions(JMenu menu, JToolBar toolbar) {
+		undoAction = new AbstractAction("Undo") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					undoManager.undo();
+				} catch (CannotUndoException ex) {
+					JOptionPane.showMessageDialog(null, ex);
+				}
+				setEnabled(undoManager.canUndo());
+				redoAction.setEnabled(undoManager.canRedo());
+			}
+		};
+		redoAction = new AbstractAction("Redo") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					undoManager.redo();
+				} catch (CannotUndoException ex) {
+					JOptionPane.showMessageDialog(null, ex);
+				}
+				setEnabled(undoManager.canRedo());
+				undoAction.setEnabled(undoManager.canUndo());
+			}
+		};
+		undoAction.setEnabled(false);
+		redoAction.setEnabled(false);
+		toolbar.add(undoAction);
+		toolbar.add(redoAction);
+		menu.add(undoAction);
+		menu.add(redoAction);
+	}
 
-    private void createToolActions(JMenu menu, JToolBar toolbar) {
-        ButtonGroup toolbarGroup = new ButtonGroup();
-        ButtonGroup menuGroup = new ButtonGroup();
-        //        addTool(new InspectTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        menu.addSeparator();
-        toolbar.addSeparator();
-        addTool(new PlaceFireTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new RemoveFireTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new PlaceRefugeTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new RemoveRefugeTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new PlaceCivilianTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new RemoveCivilianTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        menu.addSeparator();
-        toolbar.addSeparator();
-        addTool(new PlaceFireBrigadeTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new RemoveFireBrigadeTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new PlacePoliceForceTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new RemovePoliceForceTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new PlaceAmbulanceTeamTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new RemoveAmbulanceTeamTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        menu.addSeparator();
-        toolbar.addSeparator();
-        addTool(new PlaceFireStationTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new RemoveFireStationTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new PlacePoliceOfficeTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new RemovePoliceOfficeTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new PlaceAmbulanceCentreTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        addTool(new RemoveAmbulanceCentreTool(this), menu, toolbar, menuGroup, toolbarGroup);
-        
-        menu.addSeparator();
-        toolbar.addSeparator();
-        addTool(new AssignDestinationTool(this), menu, toolbar, menuGroup, toolbarGroup);
-    }
+	private void createToolActions(JMenu menu, JToolBar toolbar) {
+		ButtonGroup toolbarGroup = new ButtonGroup();
+		ButtonGroup menuGroup = new ButtonGroup();
+		// addTool(new InspectTool(this), menu, toolbar, menuGroup,
+		// toolbarGroup);
+		menu.addSeparator();
+		toolbar.addSeparator();
+		addTool(new PlaceFireTool(this), menu, toolbar, menuGroup, toolbarGroup);
+		addTool(new RemoveFireTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new PlaceRefugeTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new RemoveRefugeTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new PlaceCivilianTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new RemoveCivilianTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		menu.addSeparator();
+		toolbar.addSeparator();
+		addTool(new PlaceFireBrigadeTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new RemoveFireBrigadeTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new PlacePoliceForceTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new RemovePoliceForceTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new PlaceAmbulanceTeamTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new RemoveAmbulanceTeamTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		menu.addSeparator();
+		toolbar.addSeparator();
+		addTool(new PlaceFireStationTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new RemoveFireStationTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new PlacePoliceOfficeTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new RemovePoliceOfficeTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new PlaceAmbulanceCentreTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new RemoveAmbulanceCentreTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+		addTool(new ConfigCivLocationDistribution(this), menu, toolbar,
+				menuGroup, toolbarGroup);
 
-    private void createFunctionActions(JMenu menu, JToolBar toolbar) {
-        addFunction(new RandomiseFunction(this), menu, toolbar);
-        addFunction(new ClearFiresFunction(this), menu, toolbar);
-        addFunction(new ClearAgentsFunction(this), menu, toolbar);
-        addFunction(new ClearAllFunction(this), menu, toolbar);
-        addFunction(new PlaceAgentsFunction(this), menu, toolbar);
-        addFunction(new RandomiseDestination(this), menu, toolbar);
-        
-        addFunction(new AssignCivilianFromLocationDistribution(this), menu, toolbar);
-    }
+		menu.addSeparator();
+		toolbar.addSeparator();
+		addTool(new AssignDestinationTool(this), menu, toolbar, menuGroup,
+				toolbarGroup);
+	}
 
-    private void addTool(final Tool t, JMenu menu, JToolBar toolbar, ButtonGroup menuGroup, ButtonGroup toolbarGroup) {
-        final JToggleButton toggle = new JToggleButton();
-        final JCheckBoxMenuItem check = new JCheckBoxMenuItem();
-        Action action = new AbstractAction(t.getName()) {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (currentTool != null) {
-                        currentTool.deactivate();
-                    }
-                    currentTool = t;
-                    toggle.setSelected(true);
-                    check.setSelected(true);
-                    currentTool.activate();
-                }
-            };
-        toggle.setAction(action);
-        check.setAction(action);
-        menu.add(check);
-        toolbar.add(toggle);
-        menuGroup.add(check);
-        toolbarGroup.add(toggle);
-    }
+	private void createFunctionActions(JMenu menu, JToolBar toolbar) {
+		addFunction(new RandomiseFunction(this), menu, toolbar);
+		addFunction(new ClearFiresFunction(this), menu, toolbar);
+		addFunction(new ClearAgentsFunction(this), menu, toolbar);
+		addFunction(new ClearAllFunction(this), menu, toolbar);
+		addFunction(new PlaceAgentsFunction(this), menu, toolbar);
+		addFunction(new RandomiseDestination(this), menu, toolbar);
 
-    private void addFunction(final Function f, JMenu menu, JToolBar toolbar) {
-        Action action = new AbstractAction(f.getName()) {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    f.execute();
-                }
-            };
-        toolbar.add(action);
-        menu.add(action);
-    }
+		addFunction(new AssignCivLocationFromDistribution(this), menu, toolbar);
+		addFunction(new AssignCivDestinationFromDistribution(this), menu,
+				toolbar);
+	}
 
-    private boolean checkScenario(GMLMap newMap, Scenario newScenario) {
-        boolean valid = true;
-        for (int id : newScenario.getFires()) {
-            if (newMap.getBuilding(id) == null) {
-                valid = false;
-                Logger.warn("Fire at non-existing building " + id);
-            }
-        }
-        for (int id : newScenario.getRefuges()) {
-            if (newMap.getBuilding(id) == null) {
-                valid = false;
-                Logger.warn("Refuge at non-existing building " + id);
-            }
-        }
-        for (int id : newScenario.getFireStations()) {
-            if (newMap.getBuilding(id) == null) {
-                valid = false;
-                Logger.warn("Fire station at non-existing building " + id);
-            }
-        }
-        for (int id : newScenario.getAmbulanceCentres()) {
-            if (newMap.getBuilding(id) == null) {
-                valid = false;
-                Logger.warn("Ambulance centre at non-existing building " + id);
-            }
-        }
-        for (int id : newScenario.getPoliceOffices()) {
-            if (newMap.getBuilding(id) == null) {
-                valid = false;
-                Logger.warn("Police office at non-existing building " + id);
-            }
-        }
+	private void addTool(final Tool t, JMenu menu, JToolBar toolbar,
+			ButtonGroup menuGroup, ButtonGroup toolbarGroup) {
+		final JToggleButton toggle = new JToggleButton();
+		final JCheckBoxMenuItem check = new JCheckBoxMenuItem();
+		Action action = new AbstractAction(t.getName()) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (currentTool != null) {
+					currentTool.deactivate();
+				}
+				currentTool = t;
+				toggle.setSelected(true);
+				check.setSelected(true);
+				currentTool.activate();
+			}
+		};
+		toggle.setAction(action);
+		check.setAction(action);
+		menu.add(check);
+		toolbar.add(toggle);
+		menuGroup.add(check);
+		toolbarGroup.add(toggle);
+	}
 
-        for (int id : newScenario.getCivilians()) {
-            if (newMap.getShape(id) == null) {
-                valid = false;
-                Logger.warn("Civilian at non-existing shape " + id);
-            }
-        }
-        for (int id : newScenario.getFireBrigades()) {
-            if (newMap.getShape(id) == null) {
-                valid = false;
-                Logger.warn("Fire brigade at non-existing shape " + id);
-            }
-        }
-        for (int id : newScenario.getAmbulanceTeams()) {
-            if (newMap.getShape(id) == null) {
-                valid = false;
-                Logger.warn("Ambulance team at non-existing shape " + id);
-            }
-        }
-        for (int id : newScenario.getPoliceForces()) {
-            if (newMap.getShape(id) == null) {
-                valid = false;
-                Logger.warn("Police force at non-existing shape " + id);
-            }
-        }
-        return valid;
-    }
+	private void addFunction(final Function f, JMenu menu, JToolBar toolbar) {
+		Action action = new AbstractAction(f.getName()) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				f.execute();
+			}
+		};
+		toolbar.add(action);
+		menu.add(action);
+	}
 
-    private void updateStatusLabel() {
-        SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    statusLabel.setText(scenario.getFires().size() + " fires, "
-                                        + scenario.getRefuges().size() + " refuges, "
-                                        + scenario.getCivilians().size() + " civilians, "
-                                        + scenario.getFireBrigades().size() + " fb, "
-                                        + scenario.getFireStations().size() + " fs, "
-                                        + scenario.getPoliceForces().size() + " pf, "
-                                        + scenario.getPoliceOffices().size() + " po, "
-                                        + scenario.getAmbulanceTeams().size() + " at, "
-                                        + scenario.getAmbulanceCentres().size() + " ac"
-                                        +"==== Operation: "+(operation==null?"":operation));                                 
-                }
-            });
-    }
+	private boolean checkScenario(GMLMap newMap, Scenario newScenario) {
+		boolean valid = true;
+		for (int id : newScenario.getFires()) {
+			if (newMap.getBuilding(id) == null) {
+				valid = false;
+				Logger.warn("Fire at non-existing building " + id);
+			}
+		}
+		for (int id : newScenario.getRefuges()) {
+			if (newMap.getBuilding(id) == null) {
+				valid = false;
+				Logger.warn("Refuge at non-existing building " + id);
+			}
+		}
+		for (int id : newScenario.getFireStations()) {
+			if (newMap.getBuilding(id) == null) {
+				valid = false;
+				Logger.warn("Fire station at non-existing building " + id);
+			}
+		}
+		for (int id : newScenario.getAmbulanceCentres()) {
+			if (newMap.getBuilding(id) == null) {
+				valid = false;
+				Logger.warn("Ambulance centre at non-existing building " + id);
+			}
+		}
+		for (int id : newScenario.getPoliceOffices()) {
+			if (newMap.getBuilding(id) == null) {
+				valid = false;
+				Logger.warn("Police office at non-existing building " + id);
+			}
+		}
 
-    private void updateFireOverlay() {
-        fireOverlay.clearAllBuildingDecorators();
-        for (int next : scenario.getFires()) {
-            fireOverlay.setBuildingDecorator(fireDecorator, map.getBuilding(next));
-        }
-    }
+		for (int id : newScenario.getCivilians()) {
+			if (newMap.getShape(id) == null) {
+				valid = false;
+				Logger.warn("Civilian at non-existing shape " + id);
+			}
+		}
+		for (int id : newScenario.getFireBrigades()) {
+			if (newMap.getShape(id) == null) {
+				valid = false;
+				Logger.warn("Fire brigade at non-existing shape " + id);
+			}
+		}
+		for (int id : newScenario.getAmbulanceTeams()) {
+			if (newMap.getShape(id) == null) {
+				valid = false;
+				Logger.warn("Ambulance team at non-existing shape " + id);
+			}
+		}
+		for (int id : newScenario.getPoliceForces()) {
+			if (newMap.getShape(id) == null) {
+				valid = false;
+				Logger.warn("Police force at non-existing shape " + id);
+			}
+		}
+		return valid;
+	}
 
-    private void updateCentreOverlay() {
-        centreOverlay.clearAllBuildingDecorators();
-        for (int next : scenario.getFireStations()) {
-            centreOverlay.setBuildingDecorator(fireStationDecorator, map.getBuilding(next));
-        }
-        for (int next : scenario.getPoliceOffices()) {
-            centreOverlay.setBuildingDecorator(policeOfficeDecorator, map.getBuilding(next));
-        }
-        for (int next : scenario.getAmbulanceCentres()) {
-            centreOverlay.setBuildingDecorator(ambulanceCentreDecorator, map.getBuilding(next));
-        }
-        for (int next : scenario.getRefuges()) {
-            centreOverlay.setBuildingDecorator(refugeDecorator, map.getBuilding(next));
-        }
-    }
+	private void updateStatusLabel() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				statusLabel.setText(scenario.getFires().size() + " fires, "
+						+ scenario.getRefuges().size() + " refuges, "
+						+ scenario.getCivilians().size() + " civilians, "
+						+ scenario.getFireBrigades().size() + " fb, "
+						+ scenario.getFireStations().size() + " fs, "
+						+ scenario.getPoliceForces().size() + " pf, "
+						+ scenario.getPoliceOffices().size() + " po, "
+						+ scenario.getAmbulanceTeams().size() + " at, "
+						+ scenario.getAmbulanceCentres().size() + " ac"
+						+ "==== Operation: "
+						+ (operation == null ? "" : operation));
+			}
+		});
+	}
 
-    private void updateAgentOverlay() {
-    }
-    
-    public String getOperation() {
+	private void updateFireOverlay() {
+		fireOverlay.clearAllBuildingDecorators();
+		for (int next : scenario.getFires()) {
+			fireOverlay.setBuildingDecorator(fireDecorator,
+					map.getBuilding(next));
+		}
+	}
+
+	private void updateCentreOverlay() {
+		centreOverlay.clearAllBuildingDecorators();
+		for (int next : scenario.getFireStations()) {
+			centreOverlay.setBuildingDecorator(fireStationDecorator,
+					map.getBuilding(next));
+		}
+		for (int next : scenario.getPoliceOffices()) {
+			centreOverlay.setBuildingDecorator(policeOfficeDecorator,
+					map.getBuilding(next));
+		}
+		for (int next : scenario.getAmbulanceCentres()) {
+			centreOverlay.setBuildingDecorator(ambulanceCentreDecorator,
+					map.getBuilding(next));
+		}
+		for (int next : scenario.getRefuges()) {
+			centreOverlay.setBuildingDecorator(refugeDecorator,
+					map.getBuilding(next));
+		}
+	}
+
+	private void updateAgentOverlay() {
+	}
+
+	public String getOperation() {
 		return operation;
 	}
 
 	public void setOperation(String operation) {
 		this.operation = operation;
 	}
-	
-	 public File getBaseDir() {
-			return baseDir;
-		}
 
-		public void setBaseDir(File baseDir) {
-			this.baseDir = baseDir;
-		}
+	public File getBaseDir() {
+		return baseDir;
+	}
+
+	public void setBaseDir(File baseDir) {
+		this.baseDir = baseDir;
+	}
+
+	public AgentOverlay getAgentOverlay() {
+		return agentOverlay;
+	}
+
+	public void setAgentOverlay(AgentOverlay agentOverlay) {
+		this.agentOverlay = agentOverlay;
+	}
+
+	public DecoratorOverlay getFireOverlay() {
+		return fireOverlay;
+	}
+
+	public void setFireOverlay(DecoratorOverlay fireOverlay) {
+		this.fireOverlay = fireOverlay;
+	}
+
+	public DecoratorOverlay getCentreOverlay() {
+		return centreOverlay;
+	}
+
+	public void setCentreOverlay(DecoratorOverlay centreOverlay) {
+		this.centreOverlay = centreOverlay;
+	}
 }
