@@ -93,6 +93,8 @@ public class AssignCivLocationFromDistribution extends RegionFunction {
 		editor.setChanged();
 		editor.updateOverlays();
 		editor.setOperation(getName());
+		
+		Logger.debug("==="+editor.getViewer().getOverlays().size());
 	}
 
 	public void randomDestination()

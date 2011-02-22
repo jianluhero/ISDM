@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import rescuecore2.log.Logger;
 import rescuecore2.misc.gui.ScreenTransform;
 import rescuecore2.misc.gui.PanZoomListener;
 
@@ -67,7 +68,11 @@ public class GMLMapViewer extends JComponent {
 
     private transient List<Overlay> overlays;
 
-    private boolean grid;
+    public List<Overlay> getOverlays() {
+		return overlays;
+	}
+
+	private boolean grid;
     private double gridResolution;
 
     /**

@@ -10,7 +10,6 @@ import rescuecore2.misc.gui.ScreenTransform;
 import maps.gml.view.Overlay;
 
 public class RegionOverlay implements Overlay{
-	 public static final int SIZE=10;
 	
 	private ScenarioEditor editor;
 	
@@ -34,7 +33,16 @@ public class RegionOverlay implements Overlay{
 		double minY=editor.getMap().getMinY();
 		g.setColor(Color.RED);
 		double xSize=(maxX-minX)/xLength;
-		double ySize=(maxY-minY)/yLength;		
+		double ySize=(maxY-minY)/yLength;	
+
+		double size;
+		if(xSize<ySize)
+		{
+			size=(transform.xToScreen(maxX)-transform.xToScreen(minX))/xLength;
+		}
+		else {
+			size=(transform.yToScreen(maxY)-transform.yToScreen(minY))/yLength;
+		}
 		
 		for(int i=0;i<xLength+1;i++)
 		{
@@ -52,7 +60,7 @@ public class RegionOverlay implements Overlay{
 				{
 					int x=transform.xToScreen(minX+(i+0.5)*xSize);
 					int y=transform.yToScreen(minY+(j+0.5)*ySize);
-					Shape show = new Ellipse2D.Double(x - SIZE / 2, y - SIZE / 2, SIZE*(1+dis[i][j]), SIZE*(1+dis[i][j]));
+					Shape show = new Ellipse2D.Double(x - size / 2*dis[i][j], y - size / 2*dis[i][j], size*dis[i][j], size*dis[i][j]);
 		            g.setColor(Color.GREEN);
 		            g.fill(show);
 				}

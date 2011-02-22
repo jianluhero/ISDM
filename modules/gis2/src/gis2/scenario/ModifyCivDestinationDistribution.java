@@ -8,36 +8,38 @@ import java.util.StringTokenizer;
 
 import rescuecore2.log.Logger;
 
-public class ConfigCivLocationDistribution extends RegionTool {
+public class ModifyCivDestinationDistribution extends RegionTool {
+	
+	private static final String file="destination";
 
-	private static final String file = "location";
-
-	protected ConfigCivLocationDistribution(ScenarioEditor editor) {
+	protected ModifyCivDestinationDistribution(ScenarioEditor editor) {
 		super(editor, file);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String getName() {
-		return "Config Loc. Dis.";
+		return "Modify Des. Dis.";
 	}
 
 	@Override
 	public void activate() {
 		super.activate();
-
+		
 		load();
 		if (xLength == 0) {// no distribution exist, create default
 							// one
 			xLength = X;
 			yLength = Y;
-		}
-		dis = new double[xLength][yLength];
+			dis = new double[xLength][yLength];
+		}		
 		regionOverlay = new RegionOverlay(editor, xLength, yLength, dis);
 		editor.getViewer().addOverlay(regionOverlay);
 		editor.updateOverlays();
+		
+		editor.getViewer().repaint();
+		
 		editor.setOperation(getName());
-		count=0;		
+		count=xLength*yLength;		
 	}
 	
 	/**
@@ -54,11 +56,19 @@ public class ConfigCivLocationDistribution extends RegionTool {
 				if (l != null) {
 					StringTokenizer st = new StringTokenizer(l, ",");
 					xLength = Integer.valueOf(st.nextToken());
-					yLength = Integer.valueOf(st.nextToken());
+					yLength = Integer.valueOf(st.nextToken());				
+					dis=new double[xLength][yLength];
+					StringTokenizer v=new StringTokenizer(reader.readLine(),",");
+					for(int i=0;i<xLength;i++)
+						for(int j=0;j<yLength;j++)
+							dis[i][j]=Double.valueOf(v.nextToken());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+		else {
+			Logger.debug("file not exist");
 		}
 	}
 	

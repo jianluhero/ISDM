@@ -8,18 +8,16 @@ import java.util.StringTokenizer;
 
 import rescuecore2.log.Logger;
 
-public class ConfigCivLocationDistribution extends RegionTool {
+public class ConfigCivDestinationDistribution extends RegionTool {
+	private static final String file="destination";
 
-	private static final String file = "location";
-
-	protected ConfigCivLocationDistribution(ScenarioEditor editor) {
+	protected ConfigCivDestinationDistribution(ScenarioEditor editor) {
 		super(editor, file);
-		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
 	public String getName() {
-		return "Config Loc. Dis.";
+		return "Config Des. Dis.";
 	}
 
 	@Override
@@ -122,5 +120,5 @@ public class ConfigCivLocationDistribution extends RegionTool {
 				save();
 			}
 		}
-	}
+	}	
 }

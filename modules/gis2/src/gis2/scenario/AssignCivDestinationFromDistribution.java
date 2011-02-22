@@ -106,6 +106,7 @@ public class AssignCivDestinationFromDistribution extends RegionFunction {
 		
 		editor.setChanged();
 		editor.updateOverlays();
+		
 		editor.setOperation(getName());
 	}
 	

@@ -627,13 +627,22 @@ public class ScenarioEditor extends JPanel {
 				toolbarGroup);
 		addTool(new RemoveAmbulanceCentreTool(this), menu, toolbar, menuGroup,
 				toolbarGroup);
-		addTool(new ConfigCivLocationDistribution(this), menu, toolbar,
-				menuGroup, toolbarGroup);
-
+		
 		menu.addSeparator();
 		toolbar.addSeparator();
 		addTool(new AssignDestinationTool(this), menu, toolbar, menuGroup,
 				toolbarGroup);
+		
+		menu.addSeparator();
+		toolbar.addSeparator();
+		addTool(new ConfigCivLocationDistribution(this), menu, toolbar,
+				menuGroup, toolbarGroup);
+		addTool(new ModifyCivLocationDistribution(this), menu, toolbar,
+				menuGroup, toolbarGroup);
+		addTool(new ConfigCivDestinationDistribution(this), menu, toolbar,
+				menuGroup, toolbarGroup);
+		addTool(new ModifyCivDestinationDistribution(this), menu, toolbar,
+				menuGroup, toolbarGroup);
 	}
 
 	private void createFunctionActions(JMenu menu, JToolBar toolbar) {
@@ -677,6 +686,10 @@ public class ScenarioEditor extends JPanel {
 		Action action = new AbstractAction(f.getName()) {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (currentTool != null) {
+					currentTool.deactivate();
+					currentTool=null;
+				}
 				f.execute();
 			}
 		};
