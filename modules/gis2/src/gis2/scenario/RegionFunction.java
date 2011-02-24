@@ -7,6 +7,11 @@ import maps.gml.GMLShape;
 import rescuecore2.log.Logger;
 import rescuecore2.worldmodel.EntityID;
 
+/**
+ * this class help to get shapes in a specific region
+ * @author Bing Shi
+ *
+ */
 public abstract class RegionFunction extends AbstractFunction {
 
 	protected RegionFunction(ScenarioEditor editor) {
@@ -20,7 +25,7 @@ public abstract class RegionFunction extends AbstractFunction {
 	}
 	
 	/**
-	 * get regions when divide the map to xLength X yLength regions equally
+	 * get shapes in each region when divide the map to xLength X yLength regions equally
 	 * @param xLength
 	 * @param yLength
 	 * @return
@@ -50,7 +55,7 @@ public abstract class RegionFunction extends AbstractFunction {
 	}
 	
 	/**
-	 * get shapes under the sepcific region
+	 * get shapes under the specific region
 	 * @param minX
 	 * @param maxX
 	 * @param minY
@@ -70,5 +75,22 @@ public abstract class RegionFunction extends AbstractFunction {
 			}			
 		}
 		return r;
+	}
+	
+	/**
+	 * check whether the sum of distribution is 1
+	 * @return
+	 */
+	public boolean isOne(double dis[][])
+	{
+		double sum=0;
+		for(int i=0;i<dis.length;i++)
+			for(int j=0;j<dis[i].length;j++)
+				sum+=dis[i][j];
+		if(Math.abs(sum-1)<0.000001)
+			return true;
+		else {
+			return false;
+		}
 	}
 }

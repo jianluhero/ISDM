@@ -18,6 +18,12 @@ import rescuecore2.log.Logger;
 import maps.gml.GMLCoordinates;
 import maps.gml.GMLShape;
 
+/**
+ * divide into several regions
+ * edit probability for each region
+ * @author Bing Shi
+ *
+ */
 public abstract class RegionTool extends AbstractTool {
 	protected static final int X = 10;
 	protected static final int Y = 10;
@@ -178,5 +184,28 @@ public abstract class RegionTool extends AbstractTool {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * check whether the sum of distribution is 1
+	 * @return
+	 */
+	public boolean isOne()
+	{
+		double sum=sum();
+		if(Math.abs(sum-1)<0.000001)
+			return true;
+		else {
+			return false;
+		}
+	}
+	
+	public double sum()
+	{
+		double sum=0;
+		for(int i=0;i<dis.length;i++)
+			for(int j=0;j<dis[i].length;j++)
+				sum+=dis[i][j];
+		return sum;
 	}
 }

@@ -8,6 +8,11 @@ import java.util.StringTokenizer;
 
 import rescuecore2.log.Logger;
 
+/**
+ * modify civ's location distribution file
+ * @author Bing Shi
+ *
+ */
 public class ModifyCivLocationDistribution extends RegionTool {
 
 	private static final String file = "location";
@@ -39,7 +44,7 @@ public class ModifyCivLocationDistribution extends RegionTool {
 		editor.getViewer().repaint();
 		
 		editor.setOperation(getName());
-		count=xLength*yLength;		
+		count=xLength*yLength*(isOne()?1:0);		
 	}
 	
 	/**
@@ -62,6 +67,8 @@ public class ModifyCivLocationDistribution extends RegionTool {
 					for(int i=0;i<xLength;i++)
 						for(int j=0;j<yLength;j++)
 							dis[i][j]=Double.valueOf(v.nextToken());
+					if(!isOne())
+						dis=new double[xLength][yLength];
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -52,6 +52,7 @@ public class Scenario {
     private static final QName LOCATION_QNAME = DocumentHelper.createQName("location", SCENARIO_NAMESPACE);
     private static final QName START_QNAME=DocumentHelper.createQName("start", SCENARIO_NAMESPACE);
     private static final QName ENDS_QNAME=DocumentHelper.createQName("ends", SCENARIO_NAMESPACE);
+    private static final QName DELAY_QNAME=DocumentHelper.createQName("delay", SCENARIO_NAMESPACE);
 
     private static final QName SCENARIO_QNAME = DocumentHelper.createQName("scenario", SCENARIO_NAMESPACE);
     private static final QName REFUGE_QNAME = DocumentHelper.createQName("refuge", SCENARIO_NAMESPACE);
@@ -175,7 +176,9 @@ public class Scenario {
         	{
         		desList.add(Integer.parseInt(st.nextToken()));
         	}
-        	d.setEnds(desList);
+        	d.setEnds(desList);       	
+        	Integer delay=Integer.parseInt(e.attributeValue(DELAY_QNAME));
+        	d.setDelay(delay);
         	civLocationAndDestinations.add(d);
         }
     }
@@ -225,6 +228,7 @@ public class Scenario {
         		ends=ends+l+",";
         	}
         	e.addAttribute(ENDS_QNAME, ends);
+        	e.addAttribute(DELAY_QNAME, String.valueOf(d.getDelay()));
         	root.add(e);
         }
         root.addNamespace("scenario", SCENARIO_NAMESPACE_URI);
@@ -319,7 +323,7 @@ public class Scenario {
             model.addEntity(a);
             Logger.debug("Converted " + b + " into " + a);
         }
-        Logger.debug("Creating " + civLocationAndDestinations.size() + " civilians and intialise their destinations");
+        Logger.debug("Creating " + civLocationAndDestinations.size() + " civilians and intialise their destinations and delay");
         for(Destination d : civLocationAndDestinations)
         {
         	EntityID id = new EntityID(d.getStart());
@@ -334,6 +338,7 @@ public class Scenario {
             	des.add(new EntityID(l));
             }
             c.setDestinations(des);
+            c.setDelay(d.getDelay());
         }
         /*for (int next : civLocations) {
             EntityID id = new EntityID(next);

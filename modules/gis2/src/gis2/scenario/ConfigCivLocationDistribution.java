@@ -8,6 +8,11 @@ import java.util.StringTokenizer;
 
 import rescuecore2.log.Logger;
 
+/**
+ * configure civ's location distribution file
+ * @author Bing Shi
+ *
+ */
 public class ConfigCivLocationDistribution extends RegionTool {
 
 	private static final String file = "location";
@@ -25,7 +30,6 @@ public class ConfigCivLocationDistribution extends RegionTool {
 	@Override
 	public void activate() {
 		super.activate();
-
 		load();
 		if (xLength == 0) {// no distribution exist, create default
 							// one

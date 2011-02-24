@@ -1,24 +1,23 @@
 package gis2.scenario;
 
 import gis2.Destination;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
 
+import javax.swing.JOptionPane;
 import rescuecore2.log.Logger;
 import rescuecore2.worldmodel.EntityID;
 
-import maps.gml.GMLBuilding;
-import maps.gml.GMLRoad;
-import maps.gml.GMLShape;
-import maps.gml.GMLSpace;
+/**
+ * this class assign civilian's destination from a pre-defined distribution file
+ * @author Bing Shi
+ *
+ */
 
 public class AssignCivDestinationFromDistribution extends RegionFunction {
 
@@ -27,11 +26,9 @@ public class AssignCivDestinationFromDistribution extends RegionFunction {
 	private double destinationDis[][];
 	private int xLength;
 	private int yLength;
-	private Random random;
 
 	public AssignCivDestinationFromDistribution(ScenarioEditor editor) {
 		super(editor);
-		random = new Random();
 	}
 
 	/**
@@ -40,7 +37,7 @@ public class AssignCivDestinationFromDistribution extends RegionFunction {
 	public void load() {
 		File f = editor.getBaseDir();
 		File location = new File(f, file);
-		if (location != null) {
+		if (location.exists()) {
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(
 						location));
@@ -65,16 +62,25 @@ public class AssignCivDestinationFromDistribution extends RegionFunction {
 				e.printStackTrace();
 			}
 		}
+		else {
+			JOptionPane.showMessageDialog(null, "distribution file does not exist!");
+		}
 	}
 
 	public void execute() {
 		load();
-		if (destinationDis.length == 0)
+		if (destinationDis== null)
+		{
 			return;
+		}
+		else if(!isOne(destinationDis))
+		{
+			JOptionPane.showMessageDialog(null, "wrong distribution file!");
+			return;
+		}
 		ArrayList<EntityID>[][] districts = getDistricts(xLength, yLength);
 		Iterator<Integer>civs=editor.getScenario().getCivilians().iterator();
 		ArrayList<Destination>destinations=editor.getScenario().getDestination();
-		List<GMLShape> all = new ArrayList<GMLShape>(editor.getMap().getAllShapes());
 		Random random=new Random();
 		destinations.clear();
 		while (civs.hasNext())
@@ -105,8 +111,7 @@ public class AssignCivDestinationFromDistribution extends RegionFunction {
 		}
 		
 		editor.setChanged();
-		editor.updateOverlays();
-		
+		editor.updateOverlays();		
 		editor.setOperation(getName());
 	}
 	

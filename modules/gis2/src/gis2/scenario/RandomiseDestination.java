@@ -9,9 +9,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import rescuecore2.log.Logger;
 import rescuecore2.worldmodel.EntityID;
 import maps.gml.GMLShape;
 
+/**
+ * randomise civilians' destination
+ * delay will be 0
+ * @author Bing Shi
+ *
+ */
 public class RandomiseDestination extends AbstractFunction {
 
 	private Random random;
@@ -38,6 +45,7 @@ public class RandomiseDestination extends AbstractFunction {
 		{
 			Destination d=new Destination(civs.next());			
 			int des=all.get(random.nextInt(all.size())).getID();
+			Logger.debug("civilian from "+d.getStart()+" to "+des+" dely: "+d.getDelay());
 			d.getEnds().add(des);
 			destinations.add(d);
 		}

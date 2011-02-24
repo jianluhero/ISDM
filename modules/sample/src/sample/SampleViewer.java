@@ -114,7 +114,8 @@ public class SampleViewer extends StandardViewer {
 		super.handleTimestep(t);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				timeLabel.setText("Time: " + convertToRealTimeFormat(t)); // t.getTime());
+				timeLabel.setText("Time: " +  t.getTime());
+				//timeLabel.setText("Time: " + convertToRealTimeFormat(t));
 				scoreLabel.setText("Score: "
 						+ format.format(scoreFunction.score(model,
 								new Timestep(t.getTime()))));

@@ -643,6 +643,10 @@ public class ScenarioEditor extends JPanel {
 				menuGroup, toolbarGroup);
 		addTool(new ModifyCivDestinationDistribution(this), menu, toolbar,
 				menuGroup, toolbarGroup);
+		
+		menu.addSeparator();
+		toolbar.addSeparator();
+		addTool(new AssignDelayTool(this), menu, toolbar, menuGroup, toolbarGroup);
 	}
 
 	private void createFunctionActions(JMenu menu, JToolBar toolbar) {

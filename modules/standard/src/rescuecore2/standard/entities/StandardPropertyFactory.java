@@ -66,6 +66,8 @@ public final class StandardPropertyFactory extends AbstractPropertyFactory<Stand
             return new EdgeListProperty(urn);
         case DESTINATION:
         	return new EntityRefListProperty(urn);
+        case DELAY:
+        	return new IntProperty(urn);
         default:
             throw new IllegalArgumentException("Unrecognised property urn: " + urn);
         }

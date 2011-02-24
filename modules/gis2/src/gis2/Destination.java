@@ -7,6 +7,8 @@ public class Destination {
 	
 	private ArrayList<Integer> ends;
 	
+	private int delay;
+	
 	public Destination(int start)
 	{
 		this.start=start;
@@ -21,6 +23,7 @@ public class Destination {
 		{
 			ends.add(d.getEnds().get(i).intValue());
 		}
+		this.delay=d.delay;
 	}
 
 	public int getStart() {
@@ -37,5 +40,15 @@ public class Destination {
 
 	public void setEnds(ArrayList<Integer> ends) {
 		this.ends = ends;
+	}
+	
+	public int getDelay()
+	{
+		return delay;
+	}
+	
+	public void setDelay(int delay)
+	{
+		this.delay=delay;
 	}
 }

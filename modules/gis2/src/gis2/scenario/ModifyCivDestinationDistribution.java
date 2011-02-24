@@ -6,8 +6,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.StringTokenizer;
 
+import javax.swing.JOptionPane;
+
 import rescuecore2.log.Logger;
 
+/**
+ * modify civ's destination distribution file
+ * @author Bing Shi
+ *
+ */
 public class ModifyCivDestinationDistribution extends RegionTool {
 	
 	private static final String file="destination";
@@ -23,8 +30,7 @@ public class ModifyCivDestinationDistribution extends RegionTool {
 
 	@Override
 	public void activate() {
-		super.activate();
-		
+		super.activate();		
 		load();
 		if (xLength == 0) {// no distribution exist, create default
 							// one
@@ -34,12 +40,10 @@ public class ModifyCivDestinationDistribution extends RegionTool {
 		}		
 		regionOverlay = new RegionOverlay(editor, xLength, yLength, dis);
 		editor.getViewer().addOverlay(regionOverlay);
-		editor.updateOverlays();
-		
-		editor.getViewer().repaint();
-		
+		editor.updateOverlays();		
+		editor.getViewer().repaint();		
 		editor.setOperation(getName());
-		count=xLength*yLength;		
+		count=xLength*yLength*(isOne()?1:0);		
 	}
 	
 	/**
@@ -62,13 +66,16 @@ public class ModifyCivDestinationDistribution extends RegionTool {
 					for(int i=0;i<xLength;i++)
 						for(int j=0;j<yLength;j++)
 							dis[i][j]=Double.valueOf(v.nextToken());
+					
+					if(!isOne())
+						dis=new double[xLength][yLength];
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		else {
-			Logger.debug("file not exist");
+			JOptionPane.showMessageDialog(null, "distribution file does not exist!");
 		}
 	}
 	

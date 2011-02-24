@@ -52,6 +52,7 @@ public class PlaceCivilianTool extends ShapeTool {
         Destination d=new Destination(shape.getID());
         d.setEnds(refuge);
         des.add(d);
+        d.setDelay(0);
         
         editor.setChanged();
         editor.updateOverlays();

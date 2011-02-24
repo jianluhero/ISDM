@@ -28,6 +28,7 @@ public abstract class Human extends StandardEntity {
     private IntProperty buriedness;
     
     private EntityRefListProperty destination;
+    private IntProperty delay;
 
     /**
        Construct a Human object with entirely undefined property values.
@@ -46,7 +47,8 @@ public abstract class Human extends StandardEntity {
         damage = new IntProperty(StandardPropertyURN.DAMAGE);
         buriedness = new IntProperty(StandardPropertyURN.BURIEDNESS);
         destination= new EntityRefListProperty(StandardPropertyURN.DESTINATION);
-        registerProperties(x, y, position,destination, positionHistory, travelDistance, direction, stamina, hp, damage, buriedness);
+        delay=new IntProperty(StandardPropertyURN.DELAY);
+        registerProperties(x, y, position,destination,delay, positionHistory, travelDistance, direction, stamina, hp, damage, buriedness);
     }
 
     /**
@@ -66,7 +68,8 @@ public abstract class Human extends StandardEntity {
         damage = new IntProperty(other.damage);
         buriedness = new IntProperty(other.buriedness);
         destination=new EntityRefListProperty(other.destination);
-        registerProperties(x, y, position,destination, positionHistory, travelDistance, direction, stamina, hp, damage, buriedness);
+        delay=new IntProperty(other.delay);
+        registerProperties(x, y, position,destination,delay, positionHistory, travelDistance, direction, stamina, hp, damage, buriedness);
     }
 
     @Override
@@ -101,6 +104,8 @@ public abstract class Human extends StandardEntity {
             return travelDistance;
         case DESTINATION:
         	return destination;
+        case DELAY:
+        	return delay;
         default:
             return super.getProperty(urn);
         }
@@ -114,6 +119,21 @@ public abstract class Human extends StandardEntity {
     public List<EntityID> getDestinations()
     {
     	return destination.getValue();
+    }
+    
+    public IntProperty getDelayProperty()
+    {
+    	return delay;
+    }
+    
+    public int getDelay()
+    {
+    	return delay.getValue();
+    }
+    
+    public void setDelay(int d)
+    {
+    	this.delay.setValue(d);
     }
     
     @Override

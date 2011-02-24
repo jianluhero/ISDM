@@ -39,6 +39,8 @@ public class RandomScenarioGenerator {
     private static final int DEFAULT_MAX_REFUGES = 0;
     private static final int DEFAULT_MIN_FIRES = 0;
     private static final int DEFAULT_MAX_FIRES = 0;
+    
+    private static final int DEFAULT_MAX_DELAY = 10;
 
     private int minCivs;
     private int maxCivs;
@@ -337,8 +339,9 @@ public class RandomScenarioGenerator {
             }
             Destination d=new Destination(id);
             d.setEnds(des);
+            d.setDelay(random.nextInt(DEFAULT_MAX_DELAY));
    		 	result.getDestination().add(d);
-   		 	System.out.println("civilian "+id+" --------> "+"destinations "+des.get(0).intValue()+" "+des.get(1).intValue());
+   		 	System.out.println("civilian "+id+" --------> "+"destinations "+des.get(0).intValue()+" "+des.get(1).intValue()+" day: "+d.getDelay());
         }
     }    
 }

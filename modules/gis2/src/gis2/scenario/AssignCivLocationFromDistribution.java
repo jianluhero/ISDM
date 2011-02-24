@@ -10,11 +10,18 @@ import java.util.List;
 import java.util.Random;
 import java.util.StringTokenizer;
 
+import javax.swing.JOptionPane;
+
 import maps.gml.GMLShape;
 
 import rescuecore2.log.Logger;
 import rescuecore2.worldmodel.EntityID;
 
+/**
+ * this class assign civilian's initial location from distribution file
+ * @author Bing Shi
+ *
+ */
 public class AssignCivLocationFromDistribution extends RegionFunction {
 
 	private static final String file = "location";
@@ -32,7 +39,7 @@ public class AssignCivLocationFromDistribution extends RegionFunction {
 	public void load() {
 		File f = editor.getBaseDir();
 		File location = new File(f, file);
-		if (location != null) {
+		if (location.exists()) {
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(
 						location));
@@ -57,12 +64,22 @@ public class AssignCivLocationFromDistribution extends RegionFunction {
 				e.printStackTrace();
 			}
 		}
+		else {
+			JOptionPane.showMessageDialog(null, "distribution file does not exist!");
+		}
 	}
 
 	public void execute() {
 		load();
-		if (locationDis.length == 0)
+		if (locationDis==null)
+		{
 			return;
+		}
+		else if(!isOne(locationDis))
+		{
+			JOptionPane.showMessageDialog(null, "wrong distribution file!");
+			return;
+		}
 		Collection<Integer> civLocation = new ArrayList<Integer>();
 		ArrayList<EntityID>[][] districts = getDistricts(xLength, yLength);
 		for (int i = 0; i < editor.getScenario().getCivilians().size(); i++) {
@@ -93,8 +110,6 @@ public class AssignCivLocationFromDistribution extends RegionFunction {
 		editor.setChanged();
 		editor.updateOverlays();
 		editor.setOperation(getName());
-		
-		Logger.debug("==="+editor.getViewer().getOverlays().size());
 	}
 
 	public void randomDestination()

@@ -41,6 +41,7 @@ public enum StandardPropertyURN {
     TRAVEL_DISTANCE(PROPERTY_URN_PREFIX + "traveldistance"),
     WATER_QUANTITY(PROPERTY_URN_PREFIX + "waterquantity"),
     DESTINATION(PROPERTY_URN_PREFIX+"destination"),
+    DELAY(PROPERTY_URN_PREFIX+"delay"),
 
     TEMPERATURE(PROPERTY_URN_PREFIX + "temperature"),
     IMPORTANCE(PROPERTY_URN_PREFIX + "importance");
