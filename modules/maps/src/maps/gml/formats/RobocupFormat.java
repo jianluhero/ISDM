@@ -360,4 +360,16 @@ public final class RobocupFormat extends GMLMapFormat {
             throw new MapException("Attribute " + attributeName + " is not an integer: " + e);
         }
     }
+    
+  /**
+   * 
+   * @param buildingID
+   * @param roadID
+   * @param coordinates
+   */
+    public void gereratePaths(GMLBuilding building, GMLRoad road,ArrayList<ArrayList<GMLCoordinates>> coordinates)
+    {
+    	
+    }
+    
 }

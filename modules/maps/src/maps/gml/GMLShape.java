@@ -19,7 +19,7 @@ import rescuecore2.misc.geometry.GeometryTools2D;
 public abstract class GMLShape extends GMLObject {
     private List<GMLDirectedEdge> edges;
     private Map<GMLDirectedEdge, Integer> neighbours;
-    private List<GMLCoordinates> points;
+	private List<GMLCoordinates> points;
     private Rectangle2D bounds;
     private Point2D centroid;
 
@@ -280,4 +280,12 @@ public abstract class GMLShape extends GMLObject {
         }
         throw new IllegalArgumentException(this + ": Edge " + e + " not found");
     }
+    
+    public Map<GMLDirectedEdge, Integer> getNeighbours() {
+		return neighbours;
+	}
+
+	public void setNeighbours(Map<GMLDirectedEdge, Integer> neighbours) {
+		this.neighbours = neighbours;
+	}
 }

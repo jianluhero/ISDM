@@ -305,5 +305,4 @@ public abstract class SelectionTool extends ShapeTool {
 		}
 		editor.getViewer().repaint();
 	}
-
 }
