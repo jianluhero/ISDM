@@ -1212,6 +1212,7 @@ public class GMLMap implements maps.Map {
 
 	/**
 	 * only one building and one road allowed
+	 * find the list of nodes, which construct the road between the building and the road
 	 * @param building
 	 * @param road
 	 * @param nodes

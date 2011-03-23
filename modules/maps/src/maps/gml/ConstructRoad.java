@@ -7,8 +7,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
@@ -21,7 +19,7 @@ import rescuecore2.log.Logger;
 
 public class ConstructRoad extends Component {
 
-	public final static double roadWidth = 60.0;
+	public final static double road_Width = 60.0;
 	
 	private Area area;
 	
@@ -40,7 +38,7 @@ public class ConstructRoad extends Component {
 		if (points.size() == 2) {
 			Line2D.Double line = new Line2D.Double(points.get(0),
 					points.get(1));
-			Line2D.Double[] lines = getPerpendicularPoint(line);
+			Line2D.Double[] lines = getPerpendicularPoint(line,road_Width);
 			Point2D.Double p1=new Point2D.Double(lines[0].x1, lines[0].y1);
 			Point2D.Double p2=new Point2D.Double(lines[0].x2, lines[0].y2);
 			Point2D.Double p3=new Point2D.Double(lines[1].x1, lines[1].y1);
@@ -65,6 +63,21 @@ public class ConstructRoad extends Component {
 		}
 		else {
 			for (int i = 0; i < points.size() - 2; i++) {
+				double length1=getLineLength(new Line2D.Double(points.get(i),
+						points.get(i + 1)));
+				double length2=getLineLength(new Line2D.Double(points.get(i+1),
+						points.get(i + 2)));
+				double minLength=length1>length2?length2:length1;
+				double angle=getAngle(new double[] { points.get(i + 1).getX(),
+						points.get(i + 1).getY(), 0 }, new double[] { points.get(i).getX(),
+								points.get(i).getY(), 0 },
+						new double[] { points.get(i + 2).getX(),
+								points.get(i + 2).getY(), 0 });
+				double w=minLength*Math.sin(angle/2)*2*0.8;
+				double roadWidth=w<road_Width?w:road_Width;	
+				System.out.println(length1+"--------"+length2+"====="+roadWidth);
+				roadWidth=road_Width;
+				
 				Point2D.Double innerP1;
 				Point2D.Double outerP1;
 				boolean isR1Inner;
@@ -76,7 +89,7 @@ public class ConstructRoad extends Component {
 				if (i == 0) {
 					Line2D.Double line = new Line2D.Double(points.get(i),
 							points.get(i + 1));
-					Line2D.Double[] lines = getPerpendicularPoint(line);
+					Line2D.Double[] lines = getPerpendicularPoint(line,roadWidth);
 					p1 = new Point2D.Double(lines[0].getX1(), lines[0].getY1());
 					p2 = new Point2D.Double(lines[0].getX2(), lines[0].getY2());
 				} else {
@@ -112,7 +125,7 @@ public class ConstructRoad extends Component {
 				
 				Line2D.Double line = new Line2D.Double(points.get(i + 1),
 						points.get(i + 2));
-				Line2D.Double[] lines = getPerpendicularPoint(line);
+				Line2D.Double[] lines = getPerpendicularPoint(line,roadWidth);
 				Point2D.Double p3 = new Point2D.Double(lines[1].getX1(),
 						lines[1].getY1());
 				Point2D.Double p4 = new Point2D.Double(lines[1].getX2(),
@@ -243,7 +256,13 @@ public class ConstructRoad extends Component {
 		return path;
 	}
 	
-	public ArrayList<Point2D.Double> getEvacutionRoutine(ArrayList<ArrayList<Point2D.Double>> points)
+	/**
+	 * TODO: if two lines have very small angles, then if the gap is small than roadwidth
+	 * need to remove that point
+	 * @param points
+	 * @return
+	 */
+	public ArrayList<ArrayList<Point2D.Double>> getEvacutionRoutine(ArrayList<ArrayList<Point2D.Double>> points)
 	{
 		area=new Area(getPath(points.get(0)));
 		for(int i=1;i<points.size();i++)
@@ -253,21 +272,32 @@ public class ConstructRoad extends Component {
 			area.add(temp);
 		}
 		PathIterator it=area.getPathIterator(null);
-		ArrayList<Point2D.Double> result=new ArrayList<Point2D.Double>();
+		ArrayList<ArrayList<Point2D.Double>> result=new ArrayList<ArrayList<Point2D.Double>>();
+		ArrayList<Point2D.Double> r=new ArrayList<Point2D.Double>();
 		while(!it.isDone())
 		{
 			double[]p=new double[6];
-			if(Math.abs(p[0])>0.000001)
+			int value=it.currentSegment(p);
+			System.out.println(value);
+			if(value==PathIterator.SEG_CLOSE)
 			{
-				result.add(new Point2D.Double(p[0],p[1]));
+				ArrayList<Point2D.Double> r1=new ArrayList<Point2D.Double>(r);
+				result.add(r1);
+				r.clear();
 			}
-			if(Math.abs(p[2])>0.000001)
-			{
-				result.add(new Point2D.Double(p[2],p[3]));
-			}
-			if(Math.abs(p[4])>0.000001)
-			{
-				result.add(new Point2D.Double(p[4],p[5]));
+			else if(value!=PathIterator.SEG_MOVETO){
+				if(Math.abs(p[0])>0.000001)
+				{
+					r.add(new Point2D.Double(p[0],p[1]));
+				}
+				if(Math.abs(p[2])>0.000001)
+				{
+					r.add(new Point2D.Double(p[2],p[3]));
+				}
+				if(Math.abs(p[4])>0.000001)
+				{
+					r.add(new Point2D.Double(p[4],p[5]));
+				}
 			}
 			it.next();
 		}
@@ -282,46 +312,51 @@ public class ConstructRoad extends Component {
 	    Point2D.Double p4=new Point2D.Double(100.5, 240.5);
 	    Point2D.Double p5=new Point2D.Double(200.5, 240.5);
 	    g2.setColor(Color.red);
+	  //  g2.draw(new Line2D.Double(p1, p2));
+	  //  g2.draw(new Line2D.Double(p2, p3));
+	 //   g2.draw(new Line2D.Double(p3, p4));
+	//    g2.draw(new Line2D.Double(p4, p5));
+	    ArrayList<Point2D.Double> a1=new ArrayList<Point2D.Double>();
+	    a1.add(p1);
+	    a1.add(p2);
+	 	a1.add(p3);
+		a1.add(p4);
+		a1.add(p5);
+	  //  g2.draw(getPath(a1));
+	    
+	    p1=new Point2D.Double(300.5, 300.5);
+	    p2=new Point2D.Double(320.5, 330.5);
+	    p3=new Point2D.Double(360.5, 410.5);
+	    p4=new Point2D.Double(340.5, 410.5);
+	    p5=new Point2D.Double(410.5, 420.5);
+	    g2.setColor(Color.green);
 	    g2.draw(new Line2D.Double(p1, p2));
 	    g2.draw(new Line2D.Double(p2, p3));
 	    g2.draw(new Line2D.Double(p3, p4));
 	    g2.draw(new Line2D.Double(p4, p5));
-	    ArrayList<Point2D.Double> a1=new ArrayList<Point2D.Double>();
-	    a1.add(p1);
-	    a1.add(p2);
-	 //   a1.add(p3);
-	//    a1.add(p4);
-	//    a1.add(p5);
-	    g2.draw(getPath(a1));
-	    
-	    p1=new Point2D.Double(90.5, 100.5);
-	    p2=new Point2D.Double(120.5, 130.5);
-	    p3=new Point2D.Double(160.5, 210.5);
-	    p4=new Point2D.Double(140.5, 210.5);
-	    p5=new Point2D.Double(210.5, 220.5);
-	    g2.setColor(Color.green);
-	   // g2.draw(new Line2D.Double(p1, p2));
-	  //  g2.draw(new Line2D.Double(p2, p3));
-	  //  g2.draw(new Line2D.Double(p3, p4));
-	  //  g2.draw(new Line2D.Double(p3, p5));
 	    ArrayList<Point2D.Double> a2=new ArrayList<Point2D.Double>();
 	    a2.add(p1);
 	    a2.add(p2);
 	    a2.add(p3);
-	   // a.add(p4);
+	    a2.add(p4);
 	    a2.add(p5);
-	  //  g2.draw(getPath(a2));
+	    g2.draw(getPath(a2));
 	    
 	    ArrayList<ArrayList<Point2D.Double>> a=new ArrayList<ArrayList<Point2D.Double>>();
 	    g2.setColor(Color.blue);
-	    a.add(a1);
-	   // a.add(a2);
-	    getEvacutionRoutine(a);
+	  //  a.add(a1);
+	   	a.add(a2);
+	    ArrayList<ArrayList<Point2D.Double>> r=getEvacutionRoutine(a);
 	    g2.draw(area);
-	    
-	    ArrayList<Point2D.Double> r=getEvacutionRoutine(a);
+
 	    for(int i=0;i<r.size();i++)
-	    	System.out.println(r.get(i).x+" "+r.get(i).y);
+	    {
+	    	for(int j=0;j<r.get(i).size();j++)
+	    	{
+	    		System.out.println(r.get(i).get(j).x+" "+r.get(i).get(j).y);
+	    	}
+	    	System.out.println("============");
+	    }	    	
 	}
 
 	 // "main" method
@@ -352,7 +387,7 @@ public class ConstructRoad extends Component {
 		return angle;
 	}
 
-	public Line2D.Double[] getPerpendicularPoint(Line2D.Double line) {
+	public Line2D.Double[] getPerpendicularPoint(Line2D.Double line, double roadWidth) {
 		Line2D.Double result[] = new Line2D.Double[2];
 		double a;
 		if (line.y1 != line.y2) {
@@ -391,4 +426,11 @@ public class ConstructRoad extends Component {
 		return result;
 	}
 
+	public double getLineLength(Line2D.Double line) {
+		double x1 = line.getX1();
+		double y1 = line.getY1();
+		double x2 = line.getX2();
+		double y2 = line.getY2();
+		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	}
 }
