@@ -29,8 +29,8 @@ import java.io.IOException;
    A class for generating random scenarios.
 */
 public class RandomScenarioGenerator {
-    private static final int DEFAULT_MIN_CIVS = 3;
-    private static final int DEFAULT_MAX_CIVS = 3;
+    private static final int DEFAULT_MIN_CIVS = 400;
+    private static final int DEFAULT_MAX_CIVS = 400;
     private static final int DEFAULT_MIN_PLATOONS = 0;
     private static final int DEFAULT_MAX_PLATOONS = 0;
     private static final int DEFAULT_MIN_CENTRES = 0;
@@ -40,7 +40,7 @@ public class RandomScenarioGenerator {
     private static final int DEFAULT_MIN_FIRES = 0;
     private static final int DEFAULT_MAX_FIRES = 0;
     
-    private static final int DEFAULT_MAX_DELAY = 10;
+    private static final int DEFAULT_MAX_DELAY = 2;
 
     private int minCivs;
     private int maxCivs;
