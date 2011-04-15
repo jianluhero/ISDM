@@ -1,6 +1,6 @@
 <project>
   <property name="osm2gml.osmmap" value="../maps/osm/southampton.osm"/>
-  <property name="osm2gml.gmlmap" value="../maps/gml/StMarys/map.gml"/>
+  <property name="osm2gml.gmlmap" value="../maps/temp2/map1.gml"/>
   <property name="editor.gmlmap" value=""/>
   <property name="legacy2gml.legacymap" value="../maps/legacy/Foligno/"/>
   <property name="legacy2gml.gmlmap" value="../maps/gml/legacy/Foligno/map.gml"/>
