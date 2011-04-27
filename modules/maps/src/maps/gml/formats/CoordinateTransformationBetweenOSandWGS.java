@@ -1,20 +1,36 @@
 package maps.gml.formats;
 
+import gis2.Scenario;
+
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.StringTokenizer;
 
+import maps.MapReader;
+import maps.gml.GMLBuilding;
+import maps.gml.GMLDirectedEdge;
+import maps.gml.GMLMap;
+import maps.gml.GMLShape;
+
+import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.XPath;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
+
 import rescuecore2.log.Logger;
 
 /**
@@ -55,6 +71,9 @@ public class CoordinateTransformationBetweenOSandWGS {
 		SHAPE_XPATH.setNamespaceURIs(URIS);
 	}
 
+	/**
+	 * load square file of GB for transformation
+	 */
 	public void init() {
 		try {
 			BufferedReader read = new BufferedReader(new FileReader(new File(
@@ -86,6 +105,10 @@ public class CoordinateTransformationBetweenOSandWGS {
 		}
 	}
 
+	/**
+	 * from map.gml, get buildings' coordinate information
+	 * @return
+	 */
 	private ArrayList<ArrayList<Double>> getCoordinatesOfBuildings() {
 		try {
 			FileReader reader = new FileReader(new java.io.File(map));
@@ -116,6 +139,13 @@ public class CoordinateTransformationBetweenOSandWGS {
 		}
 	}
 
+	/**
+	 * transformation coordinates from osgb36 to wgs89, 
+	 * and then convert to lat/long representation.
+	 * but they are still based on nation grid reference
+	 * @param coordinatesOfBuildings
+	 * @return
+	 */
 	public ArrayList<ArrayList<Double>> transformOsgbtoWgs(
 			ArrayList<ArrayList<Double>> coordinatesOfBuildings) {
 		ArrayList<ArrayList<Double>> result = new ArrayList<ArrayList<Double>>();
@@ -126,8 +156,9 @@ public class CoordinateTransformationBetweenOSandWGS {
 				double c[] = new double[] { co.get(j), co.get(j + 1) };
 				double r1[] = transformOsgbtoWgs(c);
 				double r[] = convertEastandNorthToLatLong(r1);
-				ro.add(r[0]);
-				ro.add(r[1]);
+				//kml save coordinate in longitude, latitude, height
+				ro.add(r[1]*180/Math.PI);
+				ro.add(r[0]*180/Math.PI);
 				System.out.println("osgb: "+c[0]+" "+c[1]);
 				System.out.println("wgs: "+r1[0] + " " + r1[1]);
 				System.out.println("lat/long: "+r[0]*180/Math.PI + " " + r[1]*180/Math.PI);
@@ -140,6 +171,12 @@ public class CoordinateTransformationBetweenOSandWGS {
 		return result;
 	}
 
+	/**
+	 * transform c[] from osgb to wgs
+	 * 
+	 * @param c c[0] east, c[1] north
+	 * @return
+	 */
 	public double[] transformOsgbtoWgs(double[] c) {
 		double preSe = Double.MAX_VALUE;
 		double preSn = Double.MAX_VALUE;
@@ -179,6 +216,11 @@ public class CoordinateTransformationBetweenOSandWGS {
 		}
 	}
 
+	/**
+	 * transform c[] from wgs to osgb
+	 * @param c
+	 * @return
+	 */
 	public double[] transformWgstoOsgb(double[] c) {
 		double r[] = new double[2];
 		int east = (int) c[0] / 1000;
@@ -291,10 +333,47 @@ public class CoordinateTransformationBetweenOSandWGS {
 	public static void main(String args[]) {
 		CoordinateTransformationBetweenOSandWGS c = new CoordinateTransformationBetweenOSandWGS();
 		c.init();
-		//double a[]=new double[]{3868686.0777,27112.6452};//{651409.903,313177.270};//{610060,5643782};//{651409.792,313177.488};
+		//double a[]=new double[]{439896.95,115235.2};//{651409.903,313177.270};//{610060,5643782};//{651409.792,313177.488};
 		//System.out.println(c.transformOsgbtoWgs(a)[0]+" "+c.transformOsgbtoWgs(a)[1]);
-		//double r[]=c.convertEastandNorthToLatLong(c.transformOsgbtoWgs(a));
+		//double r[]=c.convertEastandNorthToLatLong(a);
 		//System.out.println(r[0]*180/Math.PI+" "+r[1]*180/Math.PI);
-		c.transformOsgbtoWgs(c.getCoordinatesOfBuildings());
+		c.outPutBuildingCoordinatestoKML(c.transformOsgbtoWgs(c.getCoordinatesOfBuildings()));
+	}
+
+	public void outPutBuildingCoordinatestoKML(ArrayList<ArrayList<Double>> co)
+	{
+		Element root = DocumentHelper.createElement("kml");
+		root.addAttribute("xmlns", "http://earth.google.com/kml/2.1");
+		Document doc = DocumentHelper.createDocument(root);
+		Element placemark=DocumentHelper.createElement("Placemark");
+		Element name=DocumentHelper.createElement("name");
+		name.setText("buildings' coordinates in lat/long");
+		placemark.add(name);
+		for(int i=0;i<co.size();i++)
+		{
+			ArrayList<Double> c=co.get(i);
+			String t="";
+			for(int j=0;j<c.size();j=j+2)
+			{
+				t=t+c.get(j)+","+c.get(j+1)+",0"+"\n";
+			}
+			Element polygon=DocumentHelper.createElement("Polygon");
+			Element outer=DocumentHelper.createElement("outerBoundaryIs");
+			Element linearRingElement=DocumentHelper.createElement("LinearRing");
+			Element coordinates=DocumentHelper.createElement("coordinates");
+			coordinates.setText(t);
+			linearRingElement.add(coordinates);
+			outer.add(linearRingElement);
+			polygon.add(outer);
+			placemark.add(polygon);
+		}
+		root.add(placemark);		
+		try{
+        XMLWriter writer = new XMLWriter(new FileOutputStream(new File("d:\\coordinates.kml")), OutputFormat.createPrettyPrint());
+        writer.write(doc);
+        writer.flush();
+        writer.close();}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
