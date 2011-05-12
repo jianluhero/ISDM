@@ -2,6 +2,7 @@ package maps.gml.formats;
 
 import gis2.Scenario;
 
+import java.awt.geom.Area;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,7 +44,7 @@ import rescuecore2.log.Logger;
 
 public class CoordinateTransformationBetweenOSandWGS {
 
-	private String map = "d:\\map.gml";
+	private String map = "d:\\cv\\map.gml";
 	private CoordinateProjection[] coProjections = new CoordinateProjection[876951];
 	private static final String FEATURE_CODE_BUILDING = "10021";
 	private static final XPath BUILDING_XPATH = DocumentHelper
@@ -130,7 +131,10 @@ public class CoordinateTransformationBetweenOSandWGS {
 					cos.add(Double.valueOf(st.nextToken()));
 					cos.add(Double.valueOf(st.nextToken()));
 				}
-				coordinatesOfBuildings.add(cos);
+				if(area(cos)<10.0)
+					cos.clear();
+				else
+					coordinatesOfBuildings.add(cos);
 			}
 			return coordinatesOfBuildings;
 		} catch (Exception e) {
@@ -139,6 +143,23 @@ public class CoordinateTransformationBetweenOSandWGS {
 		}
 	}
 
+	private double area(ArrayList<Double> p)
+	{
+		double x[]=new double[p.size()/2];
+		double y[]=new double[p.size()/2];
+		for(int i=0;i<p.size()/2;i++)
+		{
+			x[i]=p.get(2*i);
+			y[i]=p.get(2*i+1);
+		}
+		double sum=0;
+		for(int i=0;i<x.length-1;i++)
+		{
+			sum+=(x[i]*y[i+1]-x[i+1]*y[i]);
+		}
+		return Math.abs(sum)/2;
+	}
+	
 	/**
 	 * transformation coordinates from osgb36 to wgs89, 
 	 * and then convert to lat/long representation.
